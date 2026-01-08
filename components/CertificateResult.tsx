@@ -134,12 +134,13 @@ export default function CertificateResult() {
         return analyses;
     }, [answers]);
 
-    // Generate titles based on high scores
+    // Generate titles based on scores (expanded with humor)
     const titles = useMemo(() => {
         const titleList: string[] = [];
 
         Object.entries(categoryAnalysis).forEach(([catId, data]) => {
-            if (data.score >= 4.5) {
+            // High score titles (4.0+)
+            if (data.score >= 4.0) {
                 if (catId === 'honesty') titleList.push('誠実の鑑');
                 if (catId === 'communication') titleList.push('コミュ力MAX');
                 if (catId === 'love_style') titleList.push('愛情表現マスター');
@@ -148,10 +149,59 @@ export default function CertificateResult() {
                 if (catId === 'values') titleList.push('堅実派エリート');
                 if (catId === 'life_skills') titleList.push('生活力の鬼');
                 if (catId === 'sociability') titleList.push('社交界の星');
-                if (catId === 'self_esteem') titleList.push('自信満々');
+                if (catId === 'self_esteem') titleList.push('自信満々王');
                 if (catId === 'flexibility') titleList.push('適応力MAX');
             }
+            // Medium-high titles (3.5-3.9)
+            else if (data.score >= 3.5) {
+                if (catId === 'honesty') titleList.push('嘘つけない人');
+                if (catId === 'communication') titleList.push('聞き上手');
+                if (catId === 'love_style') titleList.push('愛情豊か');
+                if (catId === 'loyalty') titleList.push('浮気しない派');
+                if (catId === 'emotional') titleList.push('冷静沈着');
+                if (catId === 'values') titleList.push('計画的人間');
+                if (catId === 'life_skills') titleList.push('生活安定型');
+                if (catId === 'sociability') titleList.push('人見知りしない');
+                if (catId === 'self_esteem') titleList.push('自己肯定感良好');
+                if (catId === 'flexibility') titleList.push('柔軟思考');
+            }
+            // Low score humorous titles (2.5以下)
+            else if (data.score <= 2.5) {
+                if (catId === 'honesty') titleList.push('嘘も方便派');
+                if (catId === 'communication') titleList.push('マイペース会話');
+                if (catId === 'love_style') titleList.push('クールな恋愛観');
+                if (catId === 'loyalty') titleList.push('自由恋愛主義');
+                if (catId === 'emotional') titleList.push('感情豊かな人');
+                if (catId === 'values') titleList.push('今を楽しむ派');
+                if (catId === 'life_skills') titleList.push('ミニマリスト');
+                if (catId === 'sociability') titleList.push('選ばれし仲間派');
+                if (catId === 'self_esteem') titleList.push('謙虚な心');
+                if (catId === 'flexibility') titleList.push('安定志向');
+            }
         });
+
+        // Add special combo titles
+        const avgScore = Object.values(categoryAnalysis).reduce((sum, c) => sum + c.score, 0) / CATEGORIES.length;
+        if (avgScore >= 4.5) titleList.push('完璧超人');
+        if (avgScore >= 4.0) titleList.push('優等生タイプ');
+        if (avgScore <= 2.5) titleList.push('個性派');
+
+        // Specific patterns
+        if (categoryAnalysis.honesty?.score >= 4 && categoryAnalysis.loyalty?.score >= 4) {
+            titleList.push('絶対的信頼');
+        }
+        if (categoryAnalysis.love_style?.score >= 4 && categoryAnalysis.communication?.score >= 4) {
+            titleList.push('理想のパートナー');
+        }
+        if (categoryAnalysis.sociability?.score >= 4 && categoryAnalysis.communication?.score >= 4) {
+            titleList.push('人気者');
+        }
+        if (categoryAnalysis.emotional?.score <= 2.5 && categoryAnalysis.self_esteem?.score >= 4) {
+            titleList.push('繊細なナルシスト');
+        }
+        if (categoryAnalysis.life_skills?.score <= 2.5 && categoryAnalysis.flexibility?.score >= 4) {
+            titleList.push('自由奔放');
+        }
 
         return titleList.length > 0 ? titleList : ['バランス型市民'];
     }, [categoryAnalysis]);
@@ -269,13 +319,20 @@ export default function CertificateResult() {
                             ];
                             const color = colors[idx] || colors[0];
 
+                            const score = categoryAnalysis[cat.id]?.score || 3;
+                            const roundedScore = Math.round(score);
+
                             return (
                                 <div key={cat.id} className={`p-2 ${color.bg} rounded border-l-4 ${color.border}`}>
                                     <div className="flex justify-between items-center mb-1">
                                         <span className={`${color.text} font-bold`}>{cat.name}</span>
-                                        <span className="text-gray-400">
-                                            {'★'.repeat(Math.round(categoryAnalysis[cat.id]?.score || 3))}
-                                        </span>
+                                        <div className="flex gap-0.5">
+                                            {[1, 2, 3, 4, 5].map((starNum) => (
+                                                <span key={starNum} className={starNum <= roundedScore ? 'text-yellow-500' : 'text-gray-300'}>
+                                                    ★
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
                                     <span className="text-gray-700">{categoryAnalysis[cat.id]?.text}</span>
                                 </div>
