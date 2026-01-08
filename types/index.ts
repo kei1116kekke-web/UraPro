@@ -20,7 +20,7 @@ export interface ProfileData {
 }
 
 export interface DiagnosisAnswers {
-    [key: string]: number; // Q1: 5, etc.
+    [key: string]: number | string; // Support both scale (number) and choice (string) answers
 }
 
 export interface RadarStats {
