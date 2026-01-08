@@ -182,13 +182,12 @@ export default function CertificateResult() {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-center border-b-4 border-double border-primary pb-3 mb-4">
                     <div className="text-center md:text-left">
-                        <div className="text-xs font-bold text-gray-400 tracking-widest">COMPREHENSIVE DIAGNOSIS CERTIFICATE</div>
+                        <div className="text-xs font-bold text-gray-400 tracking-widest">RELATIONSHIP COMPATIBILITY ASSESSMENT</div>
                         <h1 className="text-2xl md:text-3xl font-serif font-black text-primary">
-                            総合診断証明書
+                            恋愛適性診断書
                         </h1>
                     </div>
                     <div className="mt-2 md:mt-0 flex gap-2">
-                        <span className="text-xs font-bold text-white bg-primary px-3 py-1 rounded">Type-A: 建前</span>
                         {contradictionAnalysis.score > 0 && (
                             <span className="text-xs font-bold text-white bg-red-500 px-3 py-1 rounded flex items-center gap-1">
                                 <AlertTriangle className="w-3 h-3" />
@@ -254,17 +253,34 @@ export default function CertificateResult() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-                        {CATEGORIES.map((cat, idx) => (
-                            <div key={cat.id} className="p-2 bg-gray-50 rounded border-l-4 border-primary/50">
-                                <div className="flex justify-between items-center mb-1">
-                                    <span className="text-primary font-bold">{cat.name}</span>
-                                    <span className="text-gray-400">
-                                        {'★'.repeat(Math.round(categoryAnalysis[cat.id]?.score || 3))}
-                                    </span>
+                        {CATEGORIES.map((cat, idx) => {
+                            // Color coding for each category
+                            const colors = [
+                                { bg: 'bg-blue-50', border: 'border-blue-400', text: 'text-blue-700' },     // honesty
+                                { bg: 'bg-green-50', border: 'border-green-400', text: 'text-green-700' },   // communication
+                                { bg: 'bg-pink-50', border: 'border-pink-400', text: 'text-pink-700' },      // love_style
+                                { bg: 'bg-red-50', border: 'border-red-400', text: 'text-red-700' },         // loyalty
+                                { bg: 'bg-purple-50', border: 'border-purple-400', text: 'text-purple-700' }, // emotional
+                                { bg: 'bg-yellow-50', border: 'border-yellow-400', text: 'text-yellow-700' }, // values
+                                { bg: 'bg-teal-50', border: 'border-teal-400', text: 'text-teal-700' },      // life_skills
+                                { bg: 'bg-orange-50', border: 'border-orange-400', text: 'text-orange-700' }, // sociability
+                                { bg: 'bg-indigo-50', border: 'border-indigo-400', text: 'text-indigo-700' }, // self_esteem
+                                { bg: 'bg-cyan-50', border: 'border-cyan-400', text: 'text-cyan-700' },      // flexibility
+                            ];
+                            const color = colors[idx] || colors[0];
+
+                            return (
+                                <div key={cat.id} className={`p-2 ${color.bg} rounded border-l-4 ${color.border}`}>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className={`${color.text} font-bold`}>{cat.name}</span>
+                                        <span className="text-gray-400">
+                                            {'★'.repeat(Math.round(categoryAnalysis[cat.id]?.score || 3))}
+                                        </span>
+                                    </div>
+                                    <span className="text-gray-700">{categoryAnalysis[cat.id]?.text}</span>
                                 </div>
-                                <span className="text-gray-700">{categoryAnalysis[cat.id]?.text}</span>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 

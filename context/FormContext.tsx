@@ -22,7 +22,7 @@ const defaultProfile: ProfileData = {
 };
 
 const defaultState: FormState = {
-    step: 1,
+    step: 0,
     profile: defaultProfile,
     answers: {},
 };

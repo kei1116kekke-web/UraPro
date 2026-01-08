@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormContext } from "@/context/FormContext";
+import HomePage from "@/components/HomePage";
 import ProfileForm from "@/components/ProfileForm";
 import DiagnosisForm from "@/components/DiagnosisForm";
 import CertificateResult from "@/components/CertificateResult";
@@ -23,9 +24,9 @@ function StepContent() {
         setShowResult(true);
     };
 
-    // Reset when going back to step 1
+    // Reset when going back to step 0 or 1
     useEffect(() => {
-        if (state.step === 1) {
+        if (state.step <= 1) {
             setShowResult(false);
             setIsLoading(false);
         }
@@ -41,12 +42,14 @@ function StepContent() {
     }
 
     switch (state.step) {
+        case 0:
+            return <HomePage />;
         case 1:
             return <ProfileForm />;
         case 2:
             return <DiagnosisForm />;
         default:
-            return <ProfileForm />;
+            return <HomePage />;
     }
 }
 
