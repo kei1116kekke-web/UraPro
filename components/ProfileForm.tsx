@@ -5,6 +5,9 @@ import { MBTI_TYPES, LOVE_TYPES } from "@/data/constants";
 import { User, Heart, Briefcase, Hash } from "lucide-react";
 import React from "react";
 
+// Generate age options: 非公開, 0-100
+const AGE_OPTIONS = ["非公開", ...Array.from({ length: 101 }, (_, i) => `${i}歳`)];
+
 export default function ProfileForm() {
     const { state, updateProfile, setStep } = useFormContext();
     const { profile } = state;
@@ -22,10 +25,10 @@ export default function ProfileForm() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Name */}
+                    {/* Name - REQUIRED */}
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700 flex items-center gap-1">
-                            <User className="w-4 h-4" /> 氏名
+                            <User className="w-4 h-4" /> 氏名 <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -37,29 +40,30 @@ export default function ProfileForm() {
                         />
                     </div>
 
-                    {/* Age */}
+                    {/* Age - Dropdown, Optional */}
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700 flex items-center gap-1">
-                            <Hash className="w-4 h-4" /> 年齢 (自称可)
+                            <Hash className="w-4 h-4" /> 年齢
                         </label>
-                        <input
-                            type="text"
-                            required
+                        <select
                             value={profile.age}
                             onChange={(e) => updateProfile({ age: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                            placeholder="25歳"
-                        />
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white"
+                        >
+                            <option value="">選択してください</option>
+                            {AGE_OPTIONS.map((age) => (
+                                <option key={age} value={age}>{age}</option>
+                            ))}
+                        </select>
                     </div>
 
-                    {/* Job */}
+                    {/* Job - Optional */}
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700 flex items-center gap-1">
                             <Briefcase className="w-4 h-4" /> 職業 (自称可)
                         </label>
                         <input
                             type="text"
-                            required
                             value={profile.job}
                             onChange={(e) => updateProfile({ job: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
@@ -67,11 +71,10 @@ export default function ProfileForm() {
                         />
                     </div>
 
-                    {/* MBTI */}
+                    {/* MBTI - Optional */}
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700">MBTI</label>
                         <select
-                            required
                             value={profile.mbti}
                             onChange={(e) => updateProfile({ mbti: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white font-sans"
@@ -83,13 +86,12 @@ export default function ProfileForm() {
                         </select>
                     </div>
 
-                    {/* Love Type */}
+                    {/* Love Type - Optional */}
                     <div className="space-y-2">
                         <label className="block text-sm font-bold text-gray-700 flex items-center gap-1">
                             <Heart className="w-4 h-4" /> LOVEタイプ
                         </label>
                         <select
-                            required
                             value={profile.loveType}
                             onChange={(e) => updateProfile({ loveType: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white font-sans"
@@ -110,7 +112,7 @@ export default function ProfileForm() {
                     </div>
                 </div>
 
-                {/* Hobbies */}
+                {/* Hobbies - Optional */}
                 <div className="space-y-2">
                     <label className="block text-sm font-bold text-gray-700">趣味・特技</label>
                     <input

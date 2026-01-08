@@ -111,9 +111,8 @@ export default function CertificateResult() {
                             裏・公的自己申告証明書
                         </h1>
                     </div>
-                    <div className="mt-2 md:mt-0 flex items-center gap-2">
+                    <div className="mt-2 md:mt-0">
                         <span className="text-xs font-bold text-white bg-primary px-3 py-1 rounded">Type-A: 建前</span>
-                        <span className="text-2xl font-black text-primary">Grade: {overallGrade}</span>
                     </div>
                 </div>
 
@@ -132,19 +131,19 @@ export default function CertificateResult() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4 text-sm">
                     <div>
                         <div className="text-xs text-gray-400">年齢</div>
-                        <div className="font-bold">{profile.age}</div>
+                        <div className="font-bold">{profile.age || "未設定"}</div>
                     </div>
                     <div>
                         <div className="text-xs text-gray-400">職業</div>
-                        <div className="font-bold truncate">{profile.job}</div>
+                        <div className="font-bold truncate">{profile.job || "未設定"}</div>
                     </div>
                     <div>
                         <div className="text-xs text-gray-400">MBTI</div>
-                        <div className="font-bold">{profile.mbti.split('(')[0]}</div>
+                        <div className="font-bold">{profile.mbti ? profile.mbti.split('(')[0] : "未設定"}</div>
                     </div>
                     <div>
                         <div className="text-xs text-gray-400">LOVEタイプ</div>
-                        <div className="font-bold truncate">{profile.loveType.split('(')[0]}</div>
+                        <div className="font-bold truncate">{profile.loveType ? profile.loveType.split('(')[0] : "未設定"}</div>
                     </div>
                 </div>
 
