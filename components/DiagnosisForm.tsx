@@ -56,8 +56,8 @@ export default function DiagnosisForm() {
                 あまり考え込まず、直感でお答えください。
             </p>
 
-            {/* Progress Bar */}
-            <div className="mb-8">
+            {/* Progress Bar - Sticky */}
+            <div className="sticky top-0 z-10 bg-white p-4 -m-6 md:-m-8 mb-4 md:mb-6 rounded-t-xl border-b-2 border-primary/10 shadow-sm">
                 <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-bold text-primary">進捗</span>
                     <span className="text-sm font-bold text-primary">{answeredCount} / {DIAGNOSIS_QUESTIONS.length}</span>
