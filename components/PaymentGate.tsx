@@ -49,24 +49,37 @@ export default function PaymentGate() {
                     </div>
                     <div className="flex items-center gap-2">
                         <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="text-gray-700">✓ 友人評価: 10カテゴリ完了</span>
+                        <span className="text-gray-700">✓ 他者評価: 10カテゴリ完了</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <CheckCircle className="w-5 h-5 text-green-500" />
-                        <span className="text-gray-700">✓ 友人認定バッジ: 付与済み</span>
+                        <span className="text-gray-700">✓ 他者認定バッジ: 付与済み</span>
                     </div>
                 </div>
 
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <h3 className="font-bold text-blue-700 mb-2 text-sm">評価カテゴリ一覧</h3>
-                    <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-                        {CATEGORIES.map((cat, idx) => (
-                            <div key={cat.id} className="flex items-center gap-2">
-                                <span className="text-blue-500">✓</span>
-                                <span>{cat.name}</span>
-                            </div>
-                        ))}
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+                    <h3 className="font-bold text-blue-700 mb-3 text-sm">評価カテゴリスコア（概要）</h3>
+                    <div className="grid grid-cols-1 gap-2 text-sm">
+                        {CATEGORIES.map((cat) => {
+                            const selfScore = 3; // Placeholder - hide actual score
+                            const peerScore = state.friendAnswers?.ratings[cat.id] || 3;
+                            return (
+                                <div key={cat.id} className="flex items-center justify-between py-2 border-b border-blue-100 last:border-0">
+                                    <span className="text-gray-700 font-medium">{cat.name}</span>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs text-gray-500">自己: ★×{Math.round(selfScore)}</span>
+                                        <span className="text-xs text-gray-500">他者: ★×{Math.round(peerScore)}</span>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
+                </div>
+
+                <div className="bg-yellow-50 p-3 rounded border border-yellow-200">
+                    <p className="text-xs text-yellow-800 text-center">
+                        ※ 概要のみ表示。詳細な分析と他者コメントは有料版で閲覧可能です。
+                    </p>
                 </div>
             </div>
 
@@ -80,11 +93,11 @@ export default function PaymentGate() {
                 <div className="space-y-2 mb-4 text-sm text-gray-700">
                     <div className="flex items-start gap-2">
                         <span className="text-orange-500 mt-0.5">🔒</span>
-                        <span><strong>10カテゴリの詳細スコア</strong> - 自己評価と友人評価の比較表</span>
+                        <span><strong>10カテゴリの詳細スコア</strong> - 自己評価と他者評価の詳細比較表</span>
                     </div>
                     <div className="flex items-start gap-2">
                         <span className="text-orange-500 mt-0.5">🔒</span>
-                        <span><strong>友人からのコメント</strong> - 率直な評価とツッコミ</span>
+                        <span><strong>他者からのコメント</strong> - 率直な評価と具体的フィードバック</span>
                     </div>
                     <div className="flex items-start gap-2">
                         <span className="text-orange-500 mt-0.5">🔒</span>

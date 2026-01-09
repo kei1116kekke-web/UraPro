@@ -7,7 +7,6 @@ import DiagnosisForm from "@/components/DiagnosisForm";
 import CertificateResult from "@/components/CertificateResult";
 import HandoffScreen from "@/components/HandoffScreen";
 import FriendAuditForm from "@/components/FriendAuditForm";
-import GapAnalysisAnimation from "@/components/GapAnalysisAnimation";
 import PaymentGate from "@/components/PaymentGate";
 import CertificateTypeB from "@/components/CertificateTypeB";
 import LoadingAnimation from "@/components/LoadingAnimation";
@@ -18,8 +17,6 @@ function StepContent() {
     const { state } = useFormContext();
     const [isLoadingTypeA, setIsLoadingTypeA] = useState(false);
     const [showTypeA, setShowTypeA] = useState(false);
-    const [isLoadingFriend, setIsLoadingFriend] = useState(false);
-    const [showFriend, setShowFriend] = useState(false);
     const [isLoadingPayment, setIsLoadingPayment] = useState(false);
     const [showPayment, setShowPayment] = useState(false);
 
@@ -33,18 +30,6 @@ function StepContent() {
     const handleTypeALoadingComplete = () => {
         setIsLoadingTypeA(false);
         setShowTypeA(true);
-    };
-
-    // Handle Friend input loading animation (Step 4)
-    useEffect(() => {
-        if (state.step === 4 && !showFriend) {
-            setIsLoadingFriend(true);
-        }
-    }, [state.step, showFriend]);
-
-    const handleFriendLoadingComplete = () => {
-        setIsLoadingFriend(false);
-        setShowFriend(true);
     };
 
     // Handle PaymentGate loading animation (Step 5)
@@ -64,14 +49,10 @@ function StepContent() {
         if (state.step <= 1) {
             setShowTypeA(false);
             setIsLoadingTypeA(false);
-            setShowFriend(false);
-            setIsLoadingFriend(false);
             setShowPayment(false);
             setIsLoadingPayment(false);
         }
         if (state.step <= 3) {
-            setShowFriend(false);
-            setIsLoadingFriend(false);
             setShowPayment(false);
             setIsLoadingPayment(false);
         }
@@ -92,20 +73,10 @@ function StepContent() {
         }
     }
 
-    // Step 4: Friend input with loading
-    if (state.step === 4) {
-        if (isLoadingFriend) {
-            return <LoadingAnimation onComplete={handleFriendLoadingComplete} />;
-        }
-        if (showFriend) {
-            return <FriendAuditForm />;
-        }
-    }
-
-    // Step 5: Gap analysis + Payment gate with loading
+    // Step 5: Payment gate (no loading animation for transition from Step 4)
     if (state.step === 5) {
         if (isLoadingPayment) {
-            return <GapAnalysisAnimation onComplete={handlePaymentLoadingComplete} />;
+            return <LoadingAnimation onComplete={handlePaymentLoadingComplete} />;
         }
         if (showPayment) {
             return <PaymentGate />;
@@ -120,6 +91,8 @@ function StepContent() {
             return <ProfileForm />;
         case 2:
             return <DiagnosisForm />;
+        case 4:
+            return <FriendAuditForm />;
         case 6:
             return <CertificateTypeB />;
         default:

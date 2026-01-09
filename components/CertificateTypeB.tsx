@@ -9,7 +9,7 @@ export default function CertificateTypeB() {
     const { state, resetForm, setStep } = useFormContext();
     const { profile, answers, friendAnswers } = state;
 
-    // Calculate comparison between self and friend ratings
+    // Calculate comparison between self and peer ratings
     const evaluationComparison = useMemo(() => {
         if (!friendAnswers) return [];
 
@@ -27,11 +27,11 @@ export default function CertificateTypeB() {
             });
             const selfAvg = selfScores.reduce((sum, s) => sum + s, 0) / selfScores.length;
 
-            // Friend rating
-            const friendRating = friendAnswers.ratings[cat.id] || 3;
+            // Peer rating
+            const peerRating = friendAnswers.ratings[cat.id] || 3;
 
             // Calculate difference
-            const diff = selfAvg - friendRating;
+            const diff = selfAvg - peerRating;
             let assessment = '概ね一致';
             if (diff > 1) assessment = 'やや高めの自己評価';
             else if (diff < -1) assessment = 'やや控えめな自己評価';
@@ -39,13 +39,36 @@ export default function CertificateTypeB() {
             return {
                 category: cat.name,
                 self: selfAvg,
-                friend: friendRating,
+                peer: peerRating,
                 assessment: assessment
             };
         });
 
         return comparisons;
     }, [answers, friendAnswers]);
+
+    // AI Comprehensive Summary
+    const aiSummary = useMemo(() => {
+        if (!friendAnswers) return '';
+
+        const totalDiff = evaluationComparison.reduce((sum, c) => sum + Math.abs(c.self - c.peer), 0) / evaluationComparison.length;
+        const avgSelf = evaluationComparison.reduce((sum, c) => sum + c.self, 0) / evaluationComparison.length;
+        const avgPeer = evaluationComparison.reduce((sum, c) => sum + c.peer, 0) / evaluationComparison.length;
+
+        let summary = `${profile.name}さんは、`;
+
+        if (totalDiff < 0.5) {
+            summary += "自己評価と他者評価が高い一致を示しており、自己認識が非常に正確な方です。";
+        } else if (totalDiff < 1.0) {
+            summary += "自己評価と他者評価が概ね一致しており、バランスの取れた自己認識をお持ちです。";
+        } else if (avgSelf > avgPeer) {
+            summary += "自己評価がやや高めの傾向にあります。自信を持っている一方で、周囲からはもう少し謙虚に見られているかもしれません。";
+        } else {
+            summary += "自己評価が控えめで、実際には周囲から高く評価されている可能性があります。もっと自信を持っても良いでしょう。";
+        }
+
+        return summary;
+    }, [evaluationComparison, friendAnswers, profile.name]);
 
     return (
         <div className="w-full max-w-4xl flex flex-col items-center gap-6 animate-in fade-in duration-700 pb-8">
@@ -73,7 +96,7 @@ export default function CertificateTypeB() {
                         <div className="flex items-center gap-2 bg-green-50 border-2 border-green-500 rounded px-3 py-2">
                             <CheckCircle className="w-5 h-5 text-green-600" />
                             <div className="text-xs font-bold text-green-700">
-                                <div>✓ 友人認定済み</div>
+                                <div>✓ 他者認定済み</div>
                                 <div>Verified by Peer</div>
                             </div>
                         </div>
@@ -124,7 +147,7 @@ export default function CertificateTypeB() {
                                 <tr className="bg-blue-600 text-white">
                                     <th className="p-2 border border-blue-500 font-bold">カテゴリ</th>
                                     <th className="p-2 border border-blue-500 font-bold">自己評価</th>
-                                    <th className="p-2 border border-blue-500 font-bold">友人評価</th>
+                                    <th className="p-2 border border-blue-500 font-bold">他者評価</th>
                                     <th className="p-2 border border-blue-500 font-bold">評価</th>
                                 </tr>
                             </thead>
@@ -144,7 +167,7 @@ export default function CertificateTypeB() {
                                         <td className="p-2 border border-blue-200 text-center">
                                             <div className="flex gap-0.5 justify-center">
                                                 {[1, 2, 3, 4, 5].map((star) => (
-                                                    <span key={star} className={star <= Math.round(comp.friend) ? 'text-orange-500' : 'text-gray-300'}>
+                                                    <span key={star} className={star <= Math.round(comp.peer) ? 'text-orange-500' : 'text-gray-300'}>
                                                         ★
                                                     </span>
                                                 ))}
@@ -160,12 +183,25 @@ export default function CertificateTypeB() {
                     </div>
                 </div>
 
-                {/* Friend Comments */}
+                {/* AI Comprehensive Summary */}
+                <div className="border-2 border-purple-300 bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Shield className="w-4 h-4 text-purple-600" />
+                        <h4 className="text-purple-700 font-bold text-sm">AI総合評価</h4>
+                    </div>
+                    <div className="bg-white p-3 rounded border border-purple-200">
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                            {aiSummary}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Peer Comments */}
                 {friendAnswers?.comments && friendAnswers.comments.trim() && (
                     <div className="border-2 border-blue-300 bg-blue-50 p-4 rounded mb-4">
                         <div className="flex items-center gap-2 mb-2">
                             <Shield className="w-4 h-4 text-blue-600" />
-                            <h4 className="text-blue-700 font-bold text-sm">友人からのコメント</h4>
+                            <h4 className="text-blue-700 font-bold text-sm">他者からのコメント</h4>
                         </div>
                         <div className="bg-white p-3 rounded border border-blue-200">
                             <p className="text-gray-700 whitespace-pre-wrap text-sm leading-relaxed">
@@ -181,7 +217,7 @@ export default function CertificateTypeB() {
                         ◆ 本診断書について ◆
                     </p>
                     <p className="text-xs text-gray-600">
-                        本人による36問診断と、友人による10カテゴリ評価を統合した結果です。<br />
+                        本人による36問診断と、他者による10カテゴリ評価を統合した結果です。<br />
                         他者視点を取り入れることで、より客観的な自己理解が可能になります。
                     </p>
                 </div>
