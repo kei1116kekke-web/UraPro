@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "裏プロ (UraPro) - 公的恋愛証明書発行局",
+  title: "裏プロ (UraPro) - 公的裏プロ証明書発行局",
   description: "120万通りのアルゴリズムが暴く、あなたの『裏』プロフィール。その性格、加工されていませんか？",
   metadataBase: new URL('https://urapro.pages.dev'),
   openGraph: {
-    title: "裏プロ (UraPro) - 公的恋愛証明書発行局",
+    title: "裏プロ (UraPro) - 公的裏プロ証明書発行局",
     description: "120万通りのアルゴリズムが暴く、あなたの『裏』プロフィール。その性格、加工されていませんか？",
     url: 'https://urapro.pages.dev',
     siteName: '裏プロ (UraPro)',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: '裏プロ - 公的恋愛証明書発行局',
+        alt: '裏プロ - 公的裏プロ証明書発行局',
       },
     ],
     locale: 'ja_JP',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "裏プロ (UraPro) - 公的恋愛証明書発行局",
+    title: "裏プロ (UraPro) - 公的裏プロ証明書発行局",
     description: "120万通りのアルゴリズムが暴く、あなたの『裏』プロフィール。その性格、加工されていませんか？",
     images: ['/og-image.png'],
   },

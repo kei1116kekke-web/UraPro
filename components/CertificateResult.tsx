@@ -351,7 +351,7 @@ export default function CertificateResult() {
                     <div className="text-center md:text-left">
                         <div className="text-xs font-bold text-gray-400 tracking-widest">RELATIONSHIP COMPATIBILITY ASSESSMENT</div>
                         <h1 className="text-2xl md:text-3xl font-serif font-black text-primary">
-                            恋愛適性診断書
+                            裏プロ証明書
                         </h1>
                     </div>
                     <div className="mt-2 md:mt-0 flex gap-2">

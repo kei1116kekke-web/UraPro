@@ -88,7 +88,7 @@ export default function CertificateTypeB() {
                     <div className="text-center md:text-left">
                         <div className="text-xs font-bold text-gray-400 tracking-widest">PEER-EVALUATED DIAGNOSIS REPORT</div>
                         <h1 className="text-2xl md:text-3xl font-serif font-black text-blue-600">
-                            他者分析診断書
+                            他己診断証明書
                         </h1>
                         <div className="text-sm text-gray-500 mt-1">Type-B: Peer Evaluation</div>
                     </div>

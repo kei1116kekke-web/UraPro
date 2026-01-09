@@ -34,7 +34,7 @@ export default function HomePage() {
                     </h1>
 
                     <p className="text-xl md:text-2xl text-gray-600 mb-12 font-medium">
-                        AIが暴く、あなたの『裏』恋愛証明書。
+                        AIが暴く、あなたの『裏』裏プロ証明書。
                     </p>
 
                     {/* 3D Certificate Image */}
@@ -42,7 +42,7 @@ export default function HomePage() {
                         <div className="relative w-full max-w-md h-64 md:h-80">
                             <Image
                                 src="/hero-certificate-3d.png"
-                                alt="恋愛適性診断書"
+                                alt="裏プロ証明書"
                                 fill
                                 className="object-contain drop-shadow-2xl"
                                 priority
