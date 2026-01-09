@@ -4,7 +4,6 @@ import { useFormContext } from "@/context/FormContext";
 import { COMPREHENSIVE_QUESTIONS } from "@/data/questions";
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import ProcessingScreen from "./ProcessingScreen";
 
 const QUESTIONS_PER_PAGE = 6;
 
@@ -12,7 +11,6 @@ export default function DiagnosisForm() {
     const { updateAnswers, setStep } = useFormContext();
     const [localAnswers, setLocalAnswers] = useState<{ [key: string]: any }>({});
     const [currentPage, setCurrentPage] = useState(0);
-    const [showProcessing, setShowProcessing] = useState<12 | 24 | null>(null);
 
     const totalPages = Math.ceil(COMPREHENSIVE_QUESTIONS.length / QUESTIONS_PER_PAGE);
     const startIndex = currentPage * QUESTIONS_PER_PAGE;
@@ -26,15 +24,6 @@ export default function DiagnosisForm() {
     const handleChange = (id: string, value: any) => {
         const newAnswers = { ...localAnswers, [id]: value };
         setLocalAnswers(newAnswers);
-
-        // Check if this is the 12th or 24th question
-        const totalAnswered = Object.keys(newAnswers).length;
-
-        if (totalAnswered === 12 && !showProcessing) {
-            setTimeout(() => setShowProcessing(12), 300);
-        } else if (totalAnswered === 24 && showProcessing !== 24) {
-            setTimeout(() => setShowProcessing(24), 300);
-        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -59,16 +48,7 @@ export default function DiagnosisForm() {
     const isAllComplete = COMPREHENSIVE_QUESTIONS.every(q => localAnswers[q.id] !== undefined);
     const answeredCount = Object.keys(localAnswers).length;
 
-    // Processing screen complete handler
-    const handleProcessingComplete = () => {
-        setShowProcessing(null);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
 
-    // Show processing screen
-    if (showProcessing) {
-        return <ProcessingScreen questionNumber={showProcessing} onComplete={handleProcessingComplete} />;
-    }
 
     return (
         <div className="w-full max-w-3xl bg-white p-6 md:p-8 rounded-xl shadow-lg border-2 border-primary/20">

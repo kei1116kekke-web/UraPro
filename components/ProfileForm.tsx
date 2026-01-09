@@ -35,7 +35,7 @@ export default function ProfileForm() {
                             required
                             value={profile.name}
                             onChange={(e) => updateProfile({ name: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-gray-900"
                             placeholder="山田 太郎"
                         />
                     </div>
@@ -48,7 +48,7 @@ export default function ProfileForm() {
                         <select
                             value={profile.age}
                             onChange={(e) => updateProfile({ age: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white text-gray-900"
                         >
                             <option value="">選択してください</option>
                             {AGE_OPTIONS.map((age) => (
@@ -66,7 +66,7 @@ export default function ProfileForm() {
                             type="text"
                             value={profile.job}
                             onChange={(e) => updateProfile({ job: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-gray-900"
                             placeholder="株式会社〇〇 係長"
                         />
                     </div>
@@ -77,7 +77,7 @@ export default function ProfileForm() {
                         <select
                             value={profile.mbti}
                             onChange={(e) => updateProfile({ mbti: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white font-sans"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white font-sans text-gray-900"
                         >
                             <option value="">選択してください</option>
                             {MBTI_TYPES.map((t) => (
@@ -94,7 +94,7 @@ export default function ProfileForm() {
                         <select
                             value={profile.loveType}
                             onChange={(e) => updateProfile({ loveType: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white font-sans"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-white font-sans text-gray-900"
                         >
                             <option value="">選択してください</option>
                             {LOVE_TYPES.map((t) => (
@@ -119,7 +119,7 @@ export default function ProfileForm() {
                         type="text"
                         value={profile.hobbies.join(', ')}
                         onChange={(e) => updateProfile({ hobbies: e.target.value.split(/,\s*/).filter(Boolean) })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-gray-900"
                         placeholder="サウナ, カフェ巡り (カンマ区切り)"
                     />
                 </div>

@@ -1,10 +1,11 @@
 "use client";
 
 import { useFormContext } from "@/context/FormContext";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { Download, RotateCcw, Star, Award, AlertTriangle, BookOpen, Target, Users, Copy, Check } from "lucide-react";
 import { COMPREHENSIVE_QUESTIONS, CATEGORIES } from "@/data/questions";
 import { saveDiagnosisResult, getMyId } from "@/lib/diagnosisDb";
+import html2canvas from "html2canvas";
 
 export default function CertificateResult() {
     const { state, resetForm, setStep } = useFormContext();
@@ -12,6 +13,7 @@ export default function CertificateResult() {
     const [myId, setMyId] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
     const [saving, setSaving] = useState(false);
+    const certificateRef = useRef<HTMLDivElement>(null);
 
     // Helper to get answer value (normalize for analysis)
     const getAnswerValue = (id: string): number => {
@@ -325,6 +327,32 @@ export default function CertificateResult() {
         saveAndGenerateId();
     }, []); // Run once on mount
 
+    const handleDownloadImage = async () => {
+        if (!certificateRef.current) return;
+
+        try {
+            const canvas = await html2canvas(certificateRef.current, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false,
+            });
+
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `裏プロ証明書_${profile.name || 'UraPro'}.png`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                }
+            }, 'image/png');
+        } catch (error) {
+            console.error('画像保存エラー:', error);
+            alert('画像の保存に失敗しました。もう一度お試しください。');
+        }
+    };
+
     const handleCopyId = () => {
         if (myId) {
             navigator.clipboard.writeText(myId);
@@ -338,8 +366,8 @@ export default function CertificateResult() {
             {/* Certificate Card */}
             <div
                 id="certificate"
-                className="bg-white p-6 md:p-8 rounded-xl shadow-2xl border-4 border-primary/30 relative overflow-hidden w-full print:shadow-none print:border-2 print:p-6"
-                style={{ maxWidth: '850px' }}
+                ref={certificateRef}
+                className="bg-gradient-to-b from-amber-50 via-white to-amber-50 p-6 md:p-10 rounded-2xl shadow-2xl border-8 border-double border-primary max-w-4xl mx-auto"
             >
                 {/* Watermark */}
                 <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center">
@@ -616,7 +644,7 @@ export default function CertificateResult() {
                     <RotateCcw className="w-5 h-5" /> 最初から
                 </button>
                 <button
-                    onClick={() => window.print()}
+                    onClick={handleDownloadImage}
                     className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors shadow-lg font-bold"
                 >
                     <Download className="w-5 h-5" /> 証明書を保存

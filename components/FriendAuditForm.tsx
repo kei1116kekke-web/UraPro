@@ -129,7 +129,7 @@ export default function FriendAuditForm() {
                     <textarea
                         value={episode}
                         onChange={(e) => setEpisode(e.target.value)}
-                        className="w-full p-3 border-2 border-blue-200 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none min-h-24 mb-3"
+                        className="w-full p-3 border-2 border-blue-200 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none min-h-24 mb-3 text-gray-900 placeholder:text-gray-500"
                         placeholder="この人を象徴するエピソードがあれば教えてください（例: 「飲み会で必ず1時間遅刻してくる」「デートプランは全部こっち任せ」）"
                     />
                 </div>
@@ -143,7 +143,7 @@ export default function FriendAuditForm() {
                     <textarea
                         value={comments}
                         onChange={(e) => setComments(e.target.value)}
-                        className="w-full p-3 border-2 border-red-200 rounded-md focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none min-h-32"
+                        className="w-full p-3 border-2 border-red-200 rounded-md focus:ring-2 focus:ring-red-400 focus:border-transparent outline-none min-h-32 text-gray-900 placeholder:text-gray-500"
                         placeholder="例: 「いつも30分遅刻してくるくせに時間守るとか言ってるw」「部屋めっちゃ汚いのに清潔感アピールしてて草」"
                     />
                 </div>
