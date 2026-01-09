@@ -3,6 +3,7 @@
 import { useFormContext } from "@/context/FormContext";
 import Image from "next/image";
 import VisionSection from "./VisionSection";
+import FlowSection from "./FlowSection";
 import TrustSection from "./TrustSection";
 import Footer from "./Footer";
 
@@ -65,6 +66,9 @@ export default function HomePage() {
 
             {/* Vision Section */}
             <VisionSection />
+
+            {/* Flow Section */}
+            <FlowSection />
 
             {/* Trust Section */}
             <TrustSection />
