@@ -2,10 +2,12 @@
 
 import { useFormContext } from "@/context/FormContext";
 import React, { useMemo, useState, useEffect, useRef } from "react";
-import { Download, RotateCcw, Star, Award, AlertTriangle, BookOpen, Target, Users, Copy, Check } from "lucide-react";
+import { Download, RotateCcw, Star, Award, AlertTriangle, BookOpen, Target, Users, Copy, Check, Heart } from "lucide-react";
 import { COMPREHENSIVE_QUESTIONS, CATEGORIES } from "@/data/questions";
 import { saveDiagnosisResult, getMyId } from "@/lib/diagnosisDb";
 import html2canvas from "html2canvas";
+import CrossCheckModal from "./CrossCheckModal";
+import SNSShareButton from "./SNSShareButton";
 
 export default function CertificateResult() {
     const { state, resetForm, setStep } = useFormContext();
@@ -14,6 +16,7 @@ export default function CertificateResult() {
     const [copied, setCopied] = useState(false);
     const [saving, setSaving] = useState(false);
     const certificateRef = useRef<HTMLDivElement>(null);
+    const [showCrossCheckModal, setShowCrossCheckModal] = useState(false);
 
     // Helper to get answer value (normalize for analysis)
     const getAnswerValue = (id: string): number => {
@@ -473,12 +476,13 @@ export default function CertificateResult() {
                         <p className="text-sm text-purple-700 mb-4 text-center">
                             パートナーのIDと照合して、関係性リスクを分析できます
                         </p>
-                        <a
-                            href="/cross-check"
-                            className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-6 py-3 rounded-lg transition-all shadow-md"
+                        <button
+                            onClick={() => setShowCrossCheckModal(true)}
+                            className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-6 py-3 rounded-lg transition-all shadow-md"
                         >
-                            相性診断ページへ
-                        </a>
+                            <Heart className="w-5 h-5" />
+                            パートナーのIDと照合する
+                        </button>
                     </div>
                 )}
 
@@ -633,7 +637,7 @@ export default function CertificateResult() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 print:hidden">
+            <div className="flex flex-wrap gap-4 print:hidden">
                 <button
                     onClick={() => {
                         resetForm();
@@ -649,12 +653,28 @@ export default function CertificateResult() {
                 >
                     <Download className="w-5 h-5" /> 証明書を保存
                 </button>
+                {myId && (
+                    <SNSShareButton
+                        myId={myId}
+                        userName={profile.name || 'あなた'}
+                        mainTitle={titles[0]}
+                    />
+                )}
             </div>
+
+            {/* Cross-Check Modal */}
+            {myId && (
+                <CrossCheckModal
+                    myId={myId}
+                    isOpen={showCrossCheckModal}
+                    onClose={() => setShowCrossCheckModal(false)}
+                />
+            )}
 
             {/* Print Styles */}
             <style jsx global>{`
         @media print {
-            body { 
+            body {
               background: white !important;
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
@@ -674,6 +694,6 @@ export default function CertificateResult() {
             }
         }
       `}</style>
-        </div>
+        </div >
     );
 }
