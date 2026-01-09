@@ -2,7 +2,7 @@
 
 import { useFormContext } from "@/context/FormContext";
 import React, { useMemo } from "react";
-import { Download, RotateCcw, Star, Award, AlertTriangle } from "lucide-react";
+import { Download, RotateCcw, Star, Award, AlertTriangle, BookOpen, Target, Users } from "lucide-react";
 import { COMPREHENSIVE_QUESTIONS, CATEGORIES } from "@/data/questions";
 
 export default function CertificateResult() {
