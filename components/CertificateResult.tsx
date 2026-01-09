@@ -436,6 +436,24 @@ export default function CertificateResult() {
                     </div>
                 )}
 
+                {/* Compatibility Check Button */}
+                {myId && (
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-lg border-2 border-purple-300 mb-4">
+                        <h3 className="text-lg font-bold text-purple-900 mb-3 text-center">
+                            💑 パートナーとの相性を診断
+                        </h3>
+                        <p className="text-sm text-purple-700 mb-4 text-center">
+                            パートナーのIDと照合して、関係性リスクを分析できます
+                        </p>
+                        <a
+                            href="/cross-check"
+                            className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-6 py-3 rounded-lg transition-all shadow-md"
+                        >
+                            相性診断ページへ
+                        </a>
+                    </div>
+                )}
+
                 {saving && (
                     <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-300 mb-4 text-center text-sm text-yellow-700">
                         IDを生成中...
