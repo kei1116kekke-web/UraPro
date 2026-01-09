@@ -1,90 +1,78 @@
 "use client";
 
 import { useFormContext } from "@/context/FormContext";
-import { Heart, Sparkles, TrendingUp } from "lucide-react";
 import Image from "next/image";
+import VisionSection from "./VisionSection";
+import TrustSection from "./TrustSection";
 
 export default function HomePage() {
     const { setStep } = useFormContext();
 
     return (
-        <div className="w-full max-w-2xl bg-gradient-to-br from-primary/5 via-white to-pink-50/30 p-8 md:p-12 rounded-2xl shadow-2xl border-2 border-primary/20">
-            {/* Logo & Title */}
-            <div className="text-center mb-8">
-                <div className="mb-6 flex justify-center">
-                    <div className="relative w-48 h-48">
-                        <Image
-                            src="/urapro_logo.png"
-                            alt="UraPro Logo"
-                            width={192}
-                            height={192}
-                            className="rounded-2xl shadow-lg"
-                        />
+        <div className="w-full">
+            {/* Hero Section */}
+            <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 px-4 py-20">
+                <div className="max-w-4xl mx-auto text-center">
+                    {/* Catchphrase */}
+                    <h1 className="text-4xl md:text-6xl font-serif font-bold text-dark-gray mb-6 leading-tight">
+                        そのプロフィール、<br />
+                        本物ですか？
+                    </h1>
+
+                    <p className="text-xl md:text-2xl text-gray-600 mb-12 font-medium">
+                        AIが暴く、あなたの『裏』恋愛証明書。
+                    </p>
+
+                    {/* 3D Certificate Image */}
+                    <div className="mb-12 flex justify-center">
+                        <div className="relative w-full max-w-md h-64 md:h-80">
+                            <Image
+                                src="/hero-certificate-3d.png"
+                                alt="恋愛適性診断書"
+                                fill
+                                className="object-contain drop-shadow-2xl"
+                                priority
+                            />
+                        </div>
                     </div>
+
+                    {/* CTA Button */}
+                    <button
+                        onClick={() => setStep(1)}
+                        className="inline-block bg-gradient-to-r from-blue-900 to-blue-700 hover:from-blue-800 hover:to-blue-600 text-white font-bold text-lg px-12 py-5 rounded-lg shadow-xl transition-all transform hover:scale-105 active:scale-95"
+                    >
+                        証明書を発行する（診断開始）
+                    </button>
+
+                    <p className="mt-6 text-sm text-gray-500">
+                        ※ 所要時間: 約5分 | 完全無料
+                    </p>
                 </div>
+            </section>
 
-                <h1 className="text-5xl md:text-6xl font-black text-primary mb-2">
-                    裏プロ
-                </h1>
-                <p className="text-xl text-gray-600 font-medium mb-1">UraPro</p>
-                <p className="text-sm text-gray-500">
-                    本音と建前を見抜く、総合恋愛診断
-                </p>
-            </div>
+            {/* Vision Section */}
+            <VisionSection />
 
-            {/* Features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center">
-                    <Heart className="w-8 h-8 text-red-500 mx-auto mb-2" />
-                    <h3 className="font-bold text-sm text-gray-800 mb-1">10カテゴリ分析</h3>
-                    <p className="text-xs text-gray-500">恋愛・生活・性格を多角的に診断</p>
+            {/* Trust Section */}
+            <TrustSection />
+
+            {/* Footer CTA */}
+            <section className="bg-tech-blue text-white py-16">
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="text-3xl font-serif font-bold mb-4">
+                        あなたの『裏』を、今すぐ証明。
+                    </h2>
+                    <p className="mb-8 text-blue-100">
+                        建前ではなく、本音で繋がる恋愛を。
+                    </p>
+                    <button
+                        onClick={() => setStep(1)}
+                        className="bg-white text-tech-blue font-bold text-lg px-12 py-4 rounded-lg shadow-lg hover:bg-gray-100 transition-colors"
+                    >
+                        無料で診断を開始する
+                    </button>
                 </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center">
-                    <Sparkles className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-                    <h3 className="font-bold text-sm text-gray-800 mb-1">矛盾検出</h3>
-                    <p className="text-xs text-gray-500">建前と本音のズレを見抜く</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 text-center">
-                    <TrendingUp className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                    <h3 className="font-bold text-sm text-gray-800 mb-1">36問の精密診断</h3>
-                    <p className="text-xs text-gray-500">信頼性の高い結果を提供</p>
-                </div>
-            </div>
-
-            {/* Description */}
-            <div className="bg-white/80 p-6 rounded-xl border border-gray-200 mb-8">
-                <h2 className="font-bold text-primary mb-3 text-lg">診断について</h2>
-                <ul className="text-sm text-gray-700 space-y-2">
-                    <li className="flex items-start gap-2">
-                        <span className="text-primary font-bold">①</span>
-                        <span>36問の質問に直感で回答（所要時間: 約6分）</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                        <span className="text-primary font-bold">②</span>
-                        <span>10カテゴリで性格・恋愛観・生活力を分析</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                        <span className="text-primary font-bold">③</span>
-                        <span>3層検証で建前と本音の矛盾を自動検出</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                        <span className="text-primary font-bold">④</span>
-                        <span>詳細な診断書をダウンロード可能</span>
-                    </li>
-                </ul>
-            </div>
-
-            {/* Start Button */}
-            <button
-                onClick={() => setStep(1)}
-                className="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-primary-dark hover:to-blue-700 text-white font-bold py-5 px-8 rounded-xl shadow-lg transform transition-all hover:scale-[1.02] active:scale-[0.98] text-lg"
-            >
-                診断を開始する
-            </button>
-
-            <p className="text-center text-xs text-gray-400 mt-4">
-                ※ 診断結果は保存されません。スクリーンショットでの保存を推奨します。
-            </p>
+            </section>
         </div>
     );
 }
