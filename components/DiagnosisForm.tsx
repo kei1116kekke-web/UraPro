@@ -108,29 +108,61 @@ export default function DiagnosisForm() {
 
                             {/* Render based on question type */}
                             {q.type === 'scale' ? (
-                                // 5-scale buttons
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex justify-between items-center gap-1 sm:gap-2">
-                                        {[1, 2, 3, 4, 5].map((val) => (
-                                            <button
-                                                key={val}
-                                                type="button"
-                                                onClick={() => handleChange(q.id, val)}
-                                                className={clsx(
-                                                    "flex-1 py-3 rounded-md text-sm font-bold transition-all border-2",
-                                                    currentVal === val
-                                                        ? "bg-primary text-white border-primary shadow-md transform scale-105"
-                                                        : "bg-white text-gray-500 border-gray-200 hover:border-primary/50 hover:bg-gray-50"
-                                                )}
-                                            >
-                                                {val}
-                                            </button>
-                                        ))}
+                                // 7-scale MBTI-style buttons
+                                <div className="flex flex-col gap-3">
+                                    <div className="flex justify-between items-center gap-1">
+                                        {[1, 2, 3, 4, 5, 6, 7].map((val) => {
+                                            // Gradient sizing: larger at edges, smaller in middle
+                                            const sizes = {
+                                                1: 'w-12 h-12',  // 強く同意しない
+                                                2: 'w-10 h-10',  // 同意しない
+                                                3: 'w-8 h-8',    // 少し同意しない
+                                                4: 'w-7 h-7',    // 中立
+                                                5: 'w-8 h-8',    // 少し同意
+                                                6: 'w-10 h-10',  // 同意
+                                                7: 'w-12 h-12',  // 強く同意
+                                            };
+
+                                            // Color coding: disagree (warm/gray) vs agree (cool/blue)
+                                            const getColor = () => {
+                                                if (currentVal === val) {
+                                                    return val <= 3
+                                                        ? 'bg-red-500 border-red-600'
+                                                        : val === 4
+                                                            ? 'bg-gray-500 border-gray-600'
+                                                            : 'bg-blue-500 border-blue-600';
+                                                }
+                                                return val <= 3
+                                                    ? 'bg-red-100 border-red-200 hover:border-red-400'
+                                                    : val === 4
+                                                        ? 'bg-gray-100 border-gray-200 hover:border-gray-400'
+                                                        : 'bg-blue-100 border-blue-200 hover:border-blue-400';
+                                            };
+
+                                            return (
+                                                <button
+                                                    key={val}
+                                                    type="button"
+                                                    onClick={() => handleChange(q.id, val)}
+                                                    className={clsx(
+                                                        "rounded-full border-2 transition-all flex items-center justify-center",
+                                                        sizes[val as keyof typeof sizes],
+                                                        getColor(),
+                                                        currentVal === val ? 'scale-110 shadow-lg' : 'hover:scale-105'
+                                                    )}
+                                                    aria-label={`レベル${val}`}
+                                                >
+                                                    {currentVal === val && (
+                                                        <span className="text-white font-bold text-xs">{val}</span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
-                                    <div className="flex justify-between text-xs text-gray-400 px-1">
-                                        <span>違う</span>
-                                        <span className="text-center">どちらでも<br className="sm:hidden" />ない</span>
-                                        <span>そう思う</span>
+                                    <div className="flex justify-between text-xs text-gray-500 px-1">
+                                        <span className="text-red-600 font-medium">強く<br />反対</span>
+                                        <span className="text-gray-500">中立</span>
+                                        <span className="text-blue-600 font-medium">強く<br />同意</span>
                                     </div>
                                 </div>
                             ) : (

@@ -19,11 +19,11 @@ export default function CertificateResult() {
         if (!question || !question.options) return 3; // Default neutral
 
         const optionIndex = question.options.indexOf(answer);
-        if (optionIndex === -1) return 3;
+        if (optionIndex === -1) return 4; // Default to middle value (4 out of 7)
 
-        // Map to 1-5 scale based on option count
+        // Map to 1-7 scale based on option count
         const optionCount = question.options.length;
-        return Math.round((optionIndex / (optionCount - 1)) * 4) + 1;
+        return Math.round((optionIndex / (optionCount - 1)) * 6) + 1;
     };
 
     // Contradiction detection using 3-layer validation
