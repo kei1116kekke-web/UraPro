@@ -2,18 +2,18 @@
 
 import { useFormContext } from "@/context/FormContext";
 import React, { useMemo } from "react";
-import { Download, RotateCcw, AlertTriangle, Skull, FileWarning } from "lucide-react";
+import { Download, RotateCcw, CheckCircle, Shield, Star } from "lucide-react";
 import { COMPREHENSIVE_QUESTIONS, CATEGORIES } from "@/data/questions";
 
 export default function CertificateTypeB() {
     const { state, resetForm, setStep } = useFormContext();
     const { profile, answers, friendAnswers } = state;
 
-    // Calculate gap between self and friend ratings
-    const gapAnalysis = useMemo(() => {
+    // Calculate comparison between self and friend ratings
+    const evaluationComparison = useMemo(() => {
         if (!friendAnswers) return [];
 
-        const gaps = CATEGORIES.map(cat => {
+        const comparisons = CATEGORIES.map(cat => {
             // Get average self-rating for this category
             const catQuestions = COMPREHENSIVE_QUESTIONS.filter(q => q.category === cat.id);
             const selfScores = catQuestions.map(q => {
@@ -30,115 +30,128 @@ export default function CertificateTypeB() {
             // Friend rating
             const friendRating = friendAnswers.ratings[cat.id] || 3;
 
-            // Calculate gap
-            const gap = selfAvg - friendRating;
+            // Calculate difference
+            const diff = selfAvg - friendRating;
+            let assessment = '概ね一致';
+            if (diff > 1) assessment = 'やや高めの自己評価';
+            else if (diff < -1) assessment = 'やや控えめな自己評価';
 
             return {
                 category: cat.name,
                 self: selfAvg,
                 friend: friendRating,
-                gap: gap,
-                severity: Math.abs(gap) >= 2 ? 'high' : Math.abs(gap) >= 1 ? 'medium' : 'low'
+                assessment: assessment
             };
         });
 
-        return gaps;
+        return comparisons;
     }, [answers, friendAnswers]);
-
-    const totalGap = useMemo(() => {
-        return gapAnalysis.reduce((sum, g) => sum + Math.abs(g.gap), 0) / gapAnalysis.length;
-    }, [gapAnalysis]);
-
-    const trustLevel = useMemo(() => {
-        if (totalGap >= 2.0) return { grade: 'D', label: '要注意人物', color: 'text-red-500' };
-        if (totalGap >= 1.5) return { grade: 'C', label: '建前度高め', color: 'text-orange-500' };
-        if (totalGap >= 1.0) return { grade: 'B', label: '普通', color: 'text-yellow-500' };
-        return { grade: 'A', label: '信頼性高', color: 'text-green-500' };
-    }, [totalGap]);
 
     return (
         <div className="w-full max-w-4xl flex flex-col items-center gap-6 animate-in fade-in duration-700 pb-8">
-            {/* Certificate Card - Type B (Black/Red/Yellow CIA style) */}
+            {/* Certificate Card - Type B (Clean White/Blue design) */}
             <div
                 id="certificate-type-b"
-                className="bg-gradient-to-br from-gray-900 via-black to-red-950 p-6 md:p-8 rounded-xl shadow-2xl border-4 border-red-600 relative overflow-hidden w-full print:shadow-none print:border-2 print:p-6"
+                className="bg-white p-6 md:p-8 rounded-xl shadow-2xl border-4 border-blue-400 relative overflow-hidden w-full print:shadow-none print:border-2 print:p-6"
                 style={{ maxWidth: '850px' }}
             >
-                {/* Top Secret Watermark */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center transform rotate-12">
-                    <div className="text-9xl font-black text-red-500">CLASSIFIED</div>
+                {/* Watermark */}
+                <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center">
+                    <div className="text-9xl font-serif font-black text-blue-500">URAPRO</div>
                 </div>
-
-                {/* Warning Stripes */}
-                <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-yellow-400 via-black to-yellow-400" />
-                <div className="absolute bottom-0 left-0 right-0 h-3 bg-gradient-to-r from-yellow-400 via-black to-yellow-400" />
 
                 {/* Header */}
-                <div className="border-b-4 border-double border-red-500 pb-3 mb-4 text-center relative">
-                    <div className="absolute -top-2 -left-2 bg-red-600 text-white px-3 py-1 text-xs font-black transform -rotate-3 shadow-lg">
-                        CLASSIFIED
+                <div className="flex flex-col md:flex-row justify-between items-center border-b-4 border-double border-blue-500 pb-3 mb-4">
+                    <div className="text-center md:text-left">
+                        <div className="text-xs font-bold text-gray-400 tracking-widest">PEER-EVALUATED DIAGNOSIS REPORT</div>
+                        <h1 className="text-2xl md:text-3xl font-serif font-black text-blue-600">
+                            他者分析診断書
+                        </h1>
+                        <div className="text-sm text-gray-500 mt-1">Type-B: Peer Evaluation</div>
                     </div>
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                        <AlertTriangle className="w-6 h-6 text-yellow-400" />
-                        <div className="text-xs font-bold text-red-400 tracking-widest">⚠️ CONFIDENTIAL INTELLIGENCE REPORT ⚠️</div>
-                        <AlertTriangle className="w-6 h-6 text-yellow-400" />
-                    </div>
-                    <h1 className="text-3xl md:text-4xl font-serif font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-400 to-red-500">
-                        裏・人物実態報告書
-                    </h1>
-                    <div className="text-sm text-gray-400 mt-1">Type-B: Redacted Intelligence</div>
-                </div>
-
-                {/* Subject Name */}
-                <div className="text-center mb-4">
-                    <div className="text-xs text-gray-500 mb-1">SUBJECT CODENAME</div>
-                    <div className="text-4xl md:text-5xl font-serif font-bold text-red-400 mb-2 tracking-wide">
-                        {profile.name}
-                    </div>
-                    <div className="inline-block bg-gradient-to-r from-red-900 to-yellow-900 px-6 py-2 rounded border-2 border-yellow-500">
-                        <div className="flex items-center gap-2">
-                            <Skull className="w-5 h-5 text-yellow-400" />
-                            <span className="text-yellow-300 font-bold">信頼性評価: {trustLevel.grade}</span>
-                            <span className={`${trustLevel.color} font-bold`}>({trustLevel.label})</span>
+                    <div className="mt-2 md:mt-0 flex flex-col gap-2">
+                        <div className="flex items-center gap-2 bg-green-50 border-2 border-green-500 rounded px-3 py-2">
+                            <CheckCircle className="w-5 h-5 text-green-600" />
+                            <div className="text-xs font-bold text-green-700">
+                                <div>✓ 友人認定済み</div>
+                                <div>Verified by Peer</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Gap Analysis Table */}
+                {/* Name & Basic Info */}
+                <div className="text-center mb-4">
+                    <div className="text-xs text-gray-400 mb-1">対象者</div>
+                    <div className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-2">
+                        {profile.name}
+                    </div>
+                    <div className="inline-block bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-1 rounded-full text-sm font-medium text-blue-700 border border-blue-300">
+                        他者評価による性格分析が完了しました
+                    </div>
+                </div>
+
+                {/* Basic Data Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4 text-sm">
+                    <div>
+                        <div className="text-xs text-gray-400">年齢</div>
+                        <div className="font-bold">{profile.age || "未設定"}</div>
+                    </div>
+                    <div>
+                        <div className="text-xs text-gray-400">職業</div>
+                        <div className="font-bold truncate">{profile.job || "未設定"}</div>
+                    </div>
+                    <div>
+                        <div className="text-xs text-gray-400">MBTI</div>
+                        <div className="font-bold">{profile.mbti ? profile.mbti.split('(')[0] : "未設定"}</div>
+                    </div>
+                    <div>
+                        <div className="text-xs text-gray-400">LOVEタイプ</div>
+                        <div className="font-bold truncate">{profile.loveType ? profile.loveType.split('(')[0] : "未設定"}</div>
+                    </div>
+                </div>
+
+                {/* Peer Evaluation Report */}
                 <div className="mb-4">
                     <div className="flex items-center gap-2 mb-3">
-                        <FileWarning className="w-5 h-5 text-red-500" />
-                        <h3 className="font-bold text-red-400 text-sm">建前 vs 本音 対比表</h3>
+                        <Star className="w-5 h-5 text-blue-600" />
+                        <h3 className="font-bold text-blue-600 text-sm">10カテゴリ 他者評価レポート</h3>
                     </div>
 
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse text-xs">
                             <thead>
-                                <tr className="bg-red-900 text-yellow-300 border-2 border-red-500">
-                                    <th className="p-2 border border-red-700 font-bold">カテゴリ</th>
-                                    <th className="p-2 border border-red-700 font-bold">本人(建前)</th>
-                                    <th className="p-2 border border-red-700 font-bold">友人(本音)</th>
-                                    <th className="p-2 border border-red-700 font-bold">ギャップ</th>
+                                <tr className="bg-blue-600 text-white">
+                                    <th className="p-2 border border-blue-500 font-bold">カテゴリ</th>
+                                    <th className="p-2 border border-blue-500 font-bold">自己評価</th>
+                                    <th className="p-2 border border-blue-500 font-bold">友人評価</th>
+                                    <th className="p-2 border border-blue-500 font-bold">評価</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {gapAnalysis.map((gap, idx) => (
-                                    <tr key={idx} className={`border border-red-900 ${gap.severity === 'high' ? 'bg-red-950' : gap.severity === 'medium' ? 'bg-yellow-950/30' : 'bg-gray-900'}`}>
-                                        <td className="p-2 border border-red-900 text-gray-300 font-medium">{gap.category}</td>
-                                        <td className="p-2 border border-red-900 text-center">
-                                            <span className="text-blue-400">★ {gap.self.toFixed(1)}</span>
+                                {evaluationComparison.map((comp, idx) => (
+                                    <tr key={idx} className={`border border-blue-200 ${idx % 2 === 0 ? 'bg-blue-50/30' : 'bg-white'}`}>
+                                        <td className="p-2 border border-blue-200 text-gray-800 font-medium">{comp.category}</td>
+                                        <td className="p-2 border border-blue-200 text-center">
+                                            <div className="flex gap-0.5 justify-center">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <span key={star} className={star <= Math.round(comp.self) ? 'text-blue-500' : 'text-gray-300'}>
+                                                        ★
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </td>
-                                        <td className="p-2 border border-red-900 text-center">
-                                            <span className="text-orange-400">★ {gap.friend.toFixed(1)}</span>
+                                        <td className="p-2 border border-blue-200 text-center">
+                                            <div className="flex gap-0.5 justify-center">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <span key={star} className={star <= Math.round(comp.friend) ? 'text-orange-500' : 'text-gray-300'}>
+                                                        ★
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </td>
-                                        <td className="p-2 border border-red-900 text-center font-bold">
-                                            {gap.gap > 0 ? (
-                                                <span className="text-red-400">+{gap.gap.toFixed(1)} ⚠️</span>
-                                            ) : gap.gap < 0 ? (
-                                                <span className="text-green-400">{gap.gap.toFixed(1)} ✓</span>
-                                            ) : (
-                                                <span className="text-gray-400">0.0</span>
-                                            )}
+                                        <td className="p-2 border border-blue-200 text-center text-gray-600 text-xs">
+                                            {comp.assessment}
                                         </td>
                                     </tr>
                                 ))}
@@ -147,45 +160,30 @@ export default function CertificateTypeB() {
                     </div>
                 </div>
 
-                {/* Friend Comments (Redacted Style) */}
+                {/* Friend Comments */}
                 {friendAnswers?.comments && friendAnswers.comments.trim() && (
-                    <div className="border-4 border-yellow-500 bg-black p-4 rounded mb-4 relative">
-                        <div className="absolute -top-3 left-4 bg-yellow-500 text-black px-3 py-1 text-xs font-black">
-                            INTELLIGENCE REPORT
+                    <div className="border-2 border-blue-300 bg-blue-50 p-4 rounded mb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Shield className="w-4 h-4 text-blue-600" />
+                            <h4 className="text-blue-700 font-bold text-sm">友人からのコメント</h4>
                         </div>
-                        <h4 className="text-yellow-400 font-bold mb-2 text-sm flex items-center gap-2">
-                            <Skull className="w-4 h-4" />
-                            友人による暴露コメント
-                        </h4>
-                        <div className="bg-red-950/50 p-3 rounded border border-red-700">
-                            <p className="text-red-300 whitespace-pre-wrap text-sm leading-relaxed">
+                        <div className="bg-white p-3 rounded border border-blue-200">
+                            <p className="text-gray-700 whitespace-pre-wrap text-sm leading-relaxed">
                                 {friendAnswers.comments}
                             </p>
                         </div>
                     </div>
                 )}
 
-                {/* System Judgment */}
-                <div className="border-4 border-red-600 bg-gradient-to-r from-red-950 to-black p-4 rounded text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                        <AlertTriangle className="w-5 h-5 text-yellow-400 animate-pulse" />
-                        <p className="text-yellow-300 font-bold text-sm">
-                            ━━━ システム判定 ━━━
-                        </p>
-                        <AlertTriangle className="w-5 h-5 text-yellow-400 animate-pulse" />
-                    </div>
-                    <div className="space-y-2 text-sm">
-                        <p className="text-red-300">
-                            <span className="font-bold">建前度:</span> {Math.round(totalGap * 20)}%
-                            {totalGap >= 1.5 && <span className="ml-2 text-yellow-400">(かなり盛ってる)</span>}
-                        </p>
-                        <p className="text-red-300">
-                            <span className="font-bold">平均ギャップ:</span> {totalGap.toFixed(2)} ポイント
-                        </p>
-                        <p className="text-yellow-200 text-xs mt-2">
-                            ※ この情報は機密扱いです。取り扱いにご注意ください。
-                        </p>
-                    </div>
+                {/* Footer Note */}
+                <div className="border-t-2 border-blue-300 bg-blue-50 p-3 rounded text-center">
+                    <p className="text-xs text-blue-700 font-bold mb-1">
+                        ◆ 本診断書について ◆
+                    </p>
+                    <p className="text-xs text-gray-600">
+                        本人による36問診断と、友人による10カテゴリ評価を統合した結果です。<br />
+                        他者視点を取り入れることで、より客観的な自己理解が可能になります。
+                    </p>
                 </div>
             </div>
 
@@ -202,9 +200,9 @@ export default function CertificateTypeB() {
                 </button>
                 <button
                     onClick={() => window.print()}
-                    className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-yellow-600 text-white px-6 py-3 rounded-lg hover:from-red-700 hover:to-yellow-700 transition-colors shadow-lg font-bold"
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition-colors shadow-lg font-bold"
                 >
-                    <Download className="w-5 h-5" /> 裏証明書を保存
+                    <Download className="w-5 h-5" /> 診断書を保存
                 </button>
             </div>
 

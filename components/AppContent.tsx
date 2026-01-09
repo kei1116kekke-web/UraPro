@@ -8,6 +8,7 @@ import CertificateResult from "@/components/CertificateResult";
 import HandoffScreen from "@/components/HandoffScreen";
 import FriendAuditForm from "@/components/FriendAuditForm";
 import GapAnalysisAnimation from "@/components/GapAnalysisAnimation";
+import PaymentGate from "@/components/PaymentGate";
 import CertificateTypeB from "@/components/CertificateTypeB";
 import LoadingAnimation from "@/components/LoadingAnimation";
 import { useState, useEffect } from "react";
@@ -16,8 +17,10 @@ function StepContent() {
     const { state } = useFormContext();
     const [isLoadingTypeA, setIsLoadingTypeA] = useState(false);
     const [showTypeA, setShowTypeA] = useState(false);
-    const [isLoadingTypeB, setIsLoadingTypeB] = useState(false);
-    const [showTypeB, setShowTypeB] = useState(false);
+    const [isLoadingFriend, setIsLoadingFriend] = useState(false);
+    const [showFriend, setShowFriend] = useState(false);
+    const [isLoadingPayment, setIsLoadingPayment] = useState(false);
+    const [showPayment, setShowPayment] = useState(false);
 
     // Handle Type-A loading animation (Step 3)
     useEffect(() => {
@@ -31,16 +34,28 @@ function StepContent() {
         setShowTypeA(true);
     };
 
-    // Handle Type-B loading animation (Step 5)
+    // Handle Friend input loading animation (Step 4)
     useEffect(() => {
-        if (state.step === 5 && !showTypeB) {
-            setIsLoadingTypeB(true);
+        if (state.step === 4 && !showFriend) {
+            setIsLoadingFriend(true);
         }
-    }, [state.step, showTypeB]);
+    }, [state.step, showFriend]);
 
-    const handleTypeBLoadingComplete = () => {
-        setIsLoadingTypeB(false);
-        setShowTypeB(true);
+    const handleFriendLoadingComplete = () => {
+        setIsLoadingFriend(false);
+        setShowFriend(true);
+    };
+
+    // Handle PaymentGate loading animation (Step 5)
+    useEffect(() => {
+        if (state.step === 5 && !showPayment) {
+            setIsLoadingPayment(true);
+        }
+    }, [state.step, showPayment]);
+
+    const handlePaymentLoadingComplete = () => {
+        setIsLoadingPayment(false);
+        setShowPayment(true);
     };
 
     // Reset states when going back
@@ -48,12 +63,16 @@ function StepContent() {
         if (state.step <= 1) {
             setShowTypeA(false);
             setIsLoadingTypeA(false);
-            setShowTypeB(false);
-            setIsLoadingTypeB(false);
+            setShowFriend(false);
+            setIsLoadingFriend(false);
+            setShowPayment(false);
+            setIsLoadingPayment(false);
         }
         if (state.step <= 3) {
-            setShowTypeB(false);
-            setIsLoadingTypeB(false);
+            setShowFriend(false);
+            setIsLoadingFriend(false);
+            setShowPayment(false);
+            setIsLoadingPayment(false);
         }
     }, [state.step]);
 
@@ -72,13 +91,23 @@ function StepContent() {
         }
     }
 
-    // Step 5: Gap analysis with loading
-    if (state.step === 5) {
-        if (isLoadingTypeB) {
-            return <GapAnalysisAnimation onComplete={handleTypeBLoadingComplete} />;
+    // Step 4: Friend input with loading
+    if (state.step === 4) {
+        if (isLoadingFriend) {
+            return <LoadingAnimation onComplete={handleFriendLoadingComplete} />;
         }
-        if (showTypeB) {
-            return <CertificateTypeB />;
+        if (showFriend) {
+            return <FriendAuditForm />;
+        }
+    }
+
+    // Step 5: Gap analysis + Payment gate with loading
+    if (state.step === 5) {
+        if (isLoadingPayment) {
+            return <GapAnalysisAnimation onComplete={handlePaymentLoadingComplete} />;
+        }
+        if (showPayment) {
+            return <PaymentGate />;
         }
     }
 
@@ -90,8 +119,6 @@ function StepContent() {
             return <ProfileForm />;
         case 2:
             return <DiagnosisForm />;
-        case 4:
-            return <FriendAuditForm />;
         case 6:
             return <CertificateTypeB />;
         default:

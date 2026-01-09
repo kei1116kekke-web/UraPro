@@ -9,6 +9,7 @@ interface FormContextType {
     updateProfile: (data: Partial<ProfileData>) => void;
     updateAnswers: (newAnswers: DiagnosisAnswers) => void;
     updateFriendAnswers: (friendAnswers: FriendAnswers) => void;
+    setPaid: (paid: boolean) => void;
     resetForm: () => void;
 }
 
@@ -58,12 +59,19 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
         }));
     };
 
+    const setPaid = (paid: boolean) => {
+        setState((prev) => ({
+            ...prev,
+            paid,
+        }));
+    };
+
     const resetForm = () => {
         setState(defaultState);
     };
 
     return (
-        <FormContext.Provider value={{ state, setStep, updateProfile, updateAnswers, updateFriendAnswers, resetForm }}>
+        <FormContext.Provider value={{ state, setStep, updateProfile, updateAnswers, updateFriendAnswers, setPaid, resetForm }}>
             {children}
         </FormContext.Provider>
     );

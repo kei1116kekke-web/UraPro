@@ -2,7 +2,7 @@
 
 import { useFormContext } from "@/context/FormContext";
 import { CATEGORIES } from "@/data/questions";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { UserCheck, MessageSquare } from "lucide-react";
 
@@ -10,6 +10,11 @@ export default function FriendAuditForm() {
     const { state, updateFriendAnswers, setStep } = useFormContext();
     const [ratings, setRatings] = useState<{ [category: string]: number }>({});
     const [comments, setComments] = useState("");
+
+    // Scroll to top when component mounts
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

@@ -45,4 +45,5 @@ export interface FormState {
     profile: ProfileData;
     answers: DiagnosisAnswers;
     friendAnswers?: FriendAnswers; // Optional friend evaluation data
+    paid?: boolean; // Payment status for Type-B full report
 }
