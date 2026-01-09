@@ -4,6 +4,7 @@ import { useFormContext } from "@/context/FormContext";
 import Image from "next/image";
 import VisionSection from "./VisionSection";
 import TrustSection from "./TrustSection";
+import Footer from "./Footer";
 
 export default function HomePage() {
     const { setStep } = useFormContext();
@@ -73,6 +74,9 @@ export default function HomePage() {
                     </button>
                 </div>
             </section>
+
+            {/* Footer */}
+            <Footer />
         </div>
     );
 }
