@@ -34,7 +34,8 @@ export default function HomePage() {
                     </h1>
 
                     <p className="text-xl md:text-2xl text-gray-600 mb-12 font-medium">
-                        AIが暴く、あなたの『裏プロ証明書』。
+                        AIが暴く、あなたの『<span className="font-bold text-gray-800">裏プロフィール</span>』証明書。<br />
+                        <span className="text-lg text-gray-500">（略して「裏プロ」）</span>
                     </p>
 
                     {/* 3D Certificate Image */}
