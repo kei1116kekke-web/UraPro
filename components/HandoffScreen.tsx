@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormContext } from "@/context/FormContext";
-import { Users, ArrowRight, Shield, Eye } from "lucide-react";
+import { Share2, ArrowRight, Shield, Eye, Sparkles } from "lucide-react";
 
 export default function HandoffScreen() {
     const { setStep } = useFormContext();
@@ -11,13 +11,13 @@ export default function HandoffScreen() {
             {/* Icon */}
             <div className="flex justify-center mb-6">
                 <div className="bg-orange-500 p-6 rounded-full">
-                    <Users className="w-16 h-16 text-white" />
+                    <Share2 className="w-16 h-16 text-white" />
                 </div>
             </div>
 
             {/* Title */}
             <h1 className="text-3xl md:text-4xl font-black text-center text-orange-600 mb-4">
-                友人へ端末を渡してください
+                友人にシェアしてください
             </h1>
 
             <p className="text-center text-gray-700 text-lg mb-8">
@@ -45,10 +45,10 @@ export default function HandoffScreen() {
                 </div>
 
                 <div className="bg-white p-4 rounded-lg border-2 border-orange-200 flex items-start gap-3">
-                    <ArrowRight className="w-6 h-6 text-orange-500 flex-shrink-0 mt-1" />
+                    <Sparkles className="w-6 h-6 text-orange-500 flex-shrink-0 mt-1" />
                     <div>
-                        <h3 className="font-bold text-gray-800 mb-1">結果は2人で一緒に見ることを推奨</h3>
-                        <p className="text-sm text-gray-600">建前と本音のギャップを楽しみましょう</p>
+                        <h3 className="font-bold text-gray-800 mb-1">友人の本音があなたの魅力を引き出す</h3>
+                        <p className="text-sm text-gray-600">建前だけでは見えない、あなたの真の個性が明らかに</p>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@ export default function HandoffScreen() {
             {/* Warning */}
             <div className="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-4 mb-8">
                 <p className="text-sm text-yellow-800 text-center font-medium">
-                    ⚠️ 注意: 友人が正直に答えると、予想外の結果が出る可能性があります
+                    ⚠️ 注意: 友人が正直に答えると、予想外の発見があるかもしれません
                 </p>
             </div>
 
@@ -65,12 +65,12 @@ export default function HandoffScreen() {
                 onClick={() => setStep(4)}
                 className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-5 px-8 rounded-xl shadow-lg transform transition-all hover:scale-[1.02] active:scale-[0.98] text-lg flex items-center justify-center gap-3"
             >
-                友人に渡す準備ができた
+                友人に評価してもらう
                 <ArrowRight className="w-6 h-6" />
             </button>
 
             <p className="text-center text-xs text-gray-400 mt-4">
-                ※ 友人による評価は約2分で完了します
+                ※ このデモ版では同じ端末で続けて入力します。友人にリンクを送る機能は今後実装予定です。
             </p>
         </div>
     );
