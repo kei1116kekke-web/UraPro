@@ -1,13 +1,17 @@
 "use client";
 
 import { useFormContext } from "@/context/FormContext";
-import React, { useMemo } from "react";
-import { Download, RotateCcw, Star, Award, AlertTriangle, BookOpen, Target, Users } from "lucide-react";
+import React, { useMemo, useState, useEffect } from "react";
+import { Download, RotateCcw, Star, Award, AlertTriangle, BookOpen, Target, Users, Copy, Check } from "lucide-react";
 import { COMPREHENSIVE_QUESTIONS, CATEGORIES } from "@/data/questions";
+import { saveDiagnosisResult, getMyId } from "@/lib/diagnosisDb";
 
 export default function CertificateResult() {
     const { state, resetForm, setStep } = useFormContext();
     const { profile, answers } = state;
+    const [myId, setMyId] = useState<string | null>(null);
+    const [copied, setCopied] = useState(false);
+    const [saving, setSaving] = useState(false);
 
     // Helper to get answer value (normalize for analysis)
     const getAnswerValue = (id: string): number => {
@@ -289,6 +293,46 @@ export default function CertificateResult() {
         return { warnings, strategies, compatibility };
     }, [categoryAnalysis]);
 
+    // Save diagnosis to database and get ID
+    useEffect(() => {
+        const saveAndGenerateId = async () => {
+            // Check if already saved
+            const existingId = getMyId();
+            if (existingId) {
+                setMyId(existingId);
+                return;
+            }
+
+            setSaving(true);
+            try {
+                const id = await saveDiagnosisResult(
+                    profile.name,
+                    profile,
+                    categoryAnalysis,
+                    hashtags,
+                    catchphrase
+                );
+                if (id) {
+                    setMyId(id);
+                }
+            } catch (error) {
+                console.error('Failed to save diagnosis:', error);
+            } finally {
+                setSaving(false);
+            }
+        };
+
+        saveAndGenerateId();
+    }, []); // Run once on mount
+
+    const handleCopyId = () => {
+        if (myId) {
+            navigator.clipboard.writeText(myId);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
     return (
         <div className="w-full max-w-4xl flex flex-col items-center gap-6 animate-in fade-in duration-700 pb-8">
             {/* Certificate Card */}
@@ -358,6 +402,45 @@ export default function CertificateResult() {
                         <div className="font-bold truncate">{profile.loveType ? profile.loveType.split('(')[0] : "未設定"}</div>
                     </div>
                 </div>
+
+                {/* ID Display Section */}
+                {myId && (
+                    <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-lg border-2 border-blue-400 mb-4">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div className="flex-1">
+                                <div className="text-xs font-bold text-blue-600 mb-1">個体識別番号</div>
+                                <div className="text-2xl md:text-3xl font-mono font-bold text-blue-900">
+                                    {myId}
+                                </div>
+                                <div className="text-xs text-blue-600 mt-1">Personal Identification Number</div>
+                            </div>
+                            <button
+                                onClick={handleCopyId}
+                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded-lg transition-colors">
+                                {copied ? (
+                                    <>
+                                        <Check className="w-4 h-4" />
+                                        コピー済み
+                                    </>
+                                ) : (
+                                    <>
+                                        <Copy className="w-4 h-4" />
+                                        IDをコピー
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                        <div className="mt-4 text-sm text-blue-700 bg-white/60 p-3 rounded border border-blue-300">
+                            💡 <strong>パートナーにこのIDを伝えて、関係性リスクを診断してください</strong>
+                        </div>
+                    </div>
+                )}
+
+                {saving && (
+                    <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-300 mb-4 text-center text-sm text-yellow-700">
+                        IDを生成中...
+                    </div>
+                )}
 
                 {/* Titles */}
                 {titles.length > 0 && (
