@@ -216,6 +216,79 @@ export default function CertificateResult() {
         return '自由奔放な個性派';
     }, [categoryAnalysis]);
 
+    // Generate hashtags based on personality
+    const hashtags = useMemo(() => {
+        const tags: string[] = [];
+        const avgAll = Object.values(categoryAnalysis).reduce((sum, c) => sum + c.score, 0) / CATEGORIES.length;
+
+        // Based on specific categories
+        if (categoryAnalysis.honesty?.score <= 2.5) tags.push('#外ヅラ良すぎ');
+        if (categoryAnalysis.communication?.score >= 4.5) tags.push('#レスポンス鬼早');
+        if (categoryAnalysis.emotional?.score <= 2.5) tags.push('#メンヘラ予備軍');
+        if (categoryAnalysis.loyalty?.score <= 2.5) tags.push('#浮気症注意');
+        if (categoryAnalysis.values?.score <= 2.5) tags.push('#金遃10日で消える');
+        if (categoryAnalysis.life_skills?.score <= 2.0) tags.push('#部屋カオス');
+        if (categoryAnalysis.sociability?.score >= 4.5) tags.push('#パーティーアニマル');
+        if (categoryAnalysis.self_esteem?.score >= 4.5) tags.push('#自撮り魔');
+        if (categoryAnalysis.flexibility?.score <= 2.0) tags.push('#石頭');
+        if (avgAll >= 4.5) tags.push('#完璧人間');
+        if (avgAll <= 2.5) tags.push('#問題児');
+
+        // Generic fallbacks
+        if (tags.length === 0) {
+            tags.push('#普通', '#無難', '#平均的');
+        }
+
+        return tags.slice(0, 3);
+    }, [categoryAnalysis]);
+
+    // Generate user manual (torisetsu)
+    const userManual = useMemo(() => {
+        const warnings: string[] = [];
+        const strategies: string[] = [];
+        const compatibility: string[] = [];
+
+        // Warnings based on low scores
+        if (categoryAnalysis.emotional?.score <= 2.5) {
+            warnings.push('感情的になりやすいため、急な予定変更やサプライズは禁物です。');
+        }
+        if (categoryAnalysis.life_skills?.score <= 2.0) {
+            warnings.push('生活力が低いため、同棲する場合はあなたが家事を負担する覚悟が必要です。');
+        }
+        if (categoryAnalysis.communication?.score <= 2.0) {
+            warnings.push('コミュ力不足のため、“察して”は通用しません。明確に伝えましょう。');
+        }
+
+        // Strategies based on high scores
+        if (categoryAnalysis.love_style?.score >= 4.0) {
+            strategies.push('愛情表現豊かなため、素直に感謝を伝えると喜びます。');
+        }
+        if (categoryAnalysis.values?.score >= 4.0) {
+            strategies.push('堅実派なので、将来計画や貯金の話で安心させると効果的です。');
+        }
+        if (categoryAnalysis.honesty?.score >= 4.5) {
+            strategies.push('誠実さを評価されると喜びます。嘘や裏切りは絶対に避けましょう。');
+        }
+
+        // Compatibility warnings
+        if (categoryAnalysis.flexibility?.score <= 2.0 && categoryAnalysis.values?.score >= 4.0) {
+            compatibility.push('変化を好まないタイプとは混ぜるな危険。衝突必至です。');
+        }
+        if (categoryAnalysis.sociability?.score >= 4.5) {
+            compatibility.push('インドア派や内向型とは生活リズムが合わずストレスになります。');
+        }
+        if (categoryAnalysis.emotional?.score <= 2.0) {
+            compatibility.push('メンタル強めの人と組まないと振り回されます。');
+        }
+
+        // Fallbacks
+        if (warnings.length === 0) warnings.push('特に大きな地雷はありませんが、油断は禁物です。');
+        if (strategies.length === 0) strategies.push('普通に接することで良好な関係を築けます。');
+        if (compatibility.length === 0) compatibility.push('特定の相性問題は確認されませんでした。');
+
+        return { warnings, strategies, compatibility };
+    }, [categoryAnalysis]);
+
     return (
         <div className="w-full max-w-4xl flex flex-col items-center gap-6 animate-in fade-in duration-700 pb-8">
             {/* Certificate Card */}
@@ -253,8 +326,16 @@ export default function CertificateResult() {
                     <div className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-2">
                         {profile.name}
                     </div>
-                    <div className="inline-block bg-gradient-to-r from-yellow-100 via-yellow-200 to-yellow-100 px-6 py-1 rounded-full text-sm font-bold text-yellow-800 border border-yellow-400/50">
+                    <div className="inline-block bg-gradient-to-r from-yellow-100 via-yellow-200 to-yellow-100 px-6 py-1 rounded-full text-sm font-bold text-yellow-800 border border-yellow-400/50 mb-2">
                         {catchphrase}
+                    </div>
+                    {/* Hashtags */}
+                    <div className="flex justify-center gap-2 flex-wrap">
+                        {hashtags.map((tag, i) => (
+                            <span key={i} className="text-blue-600 text-xs font-medium">
+                                {tag}
+                            </span>
+                        ))}
                     </div>
                 </div>
 
@@ -360,6 +441,55 @@ export default function CertificateResult() {
                         </p>
                     </div>
                 )}
+
+                {/* User Manual (Torisetsu) */}
+                <div className="border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-blue-50 p-4 rounded-lg mb-4">
+                    <div className="flex items-center gap-2 mb-3">
+                        <BookOpen className="w-5 h-5 text-purple-600" />
+                        <h3 className="font-bold text-purple-700 text-sm">取扱説明書（トリセツ）</h3>
+                    </div>
+
+                    <div className="space-y-3 text-xs">
+                        {/* Warnings */}
+                        <div className="bg-white p-3 rounded border border-red-200">
+                            <div className="font-bold text-red-700 mb-1 flex items-center gap-1">
+                                <AlertTriangle className="w-3 h-3" />
+                                【注意】地雷ポイント
+                            </div>
+                            <ul className="text-gray-700 space-y-1">
+                                {userManual.warnings.map((w, i) => (
+                                    <li key={i}>• {w}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Strategies */}
+                        <div className="bg-white p-3 rounded border border-green-200">
+                            <div className="font-bold text-green-700 mb-1 flex items-center gap-1">
+                                <Target className="w-3 h-3" />
+                                【攻略】効果的なアプローチ
+                            </div>
+                            <ul className="text-gray-700 space-y-1">
+                                {userManual.strategies.map((s, i) => (
+                                    <li key={i}>• {s}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Compatibility */}
+                        <div className="bg-white p-3 rounded border border-orange-200">
+                            <div className="font-bold text-orange-700 mb-1 flex items-center gap-1">
+                                <Users className="w-3 h-3" />
+                                【相性】混ぜるな危険
+                            </div>
+                            <ul className="text-gray-700 space-y-1">
+                                {userManual.compatibility.map((c, i) => (
+                                    <li key={i}>• {c}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
                 {/* Footer Note */}
                 <div className="border-t-2 border-primary/20 bg-primary/5 p-3 rounded text-center">
