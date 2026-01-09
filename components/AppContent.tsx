@@ -11,6 +11,7 @@ import GapAnalysisAnimation from "@/components/GapAnalysisAnimation";
 import PaymentGate from "@/components/PaymentGate";
 import CertificateTypeB from "@/components/CertificateTypeB";
 import LoadingAnimation from "@/components/LoadingAnimation";
+import DebugNavigation from "@/components/DebugNavigation";
 import { useState, useEffect } from "react";
 
 function StepContent() {
@@ -128,8 +129,11 @@ function StepContent() {
 
 export default function AppContent() {
     return (
-        <div className="w-full flex items-center justify-center py-8">
-            <StepContent />
-        </div>
+        <>
+            <div className="w-full flex items-center justify-center py-8">
+                <StepContent />
+            </div>
+            <DebugNavigation />
+        </>
     );
 }
