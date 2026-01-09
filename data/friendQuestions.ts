@@ -1,64 +1,153 @@
 // Specific situational questions for friend evaluation
+// Each question has custom answer options tailored to the question
 export const FRIEND_QUESTIONS = [
     {
         id: 'fq1',
-        text: '店員や後輩への態度は横柄ですか？',
-        category: 'manner'
+        text: '店員や後輩など、立場が下の人への態度はどうですか？',
+        category: 'manner',
+        options: [
+            'めちゃくちゃ優しい',
+            '丁寧で親切',
+            '普通に接する',
+            'やや冷たい',
+            '横柄で上から目線',
+        ]
     },
     {
         id: 'fq2',
-        text: 'お酒を飲むと面倒な絡み方をしますか？',
-        category: 'alcohol'
+        text: 'お酒を飲んだ時の様子はどうですか？',
+        category: 'alcohol',
+        options: [
+            '全く飲まない',
+            '楽しく盛り上がる',
+            '普通に飲む',
+            'やや絡みがち',
+            'かなり面倒になる',
+            '記憶を失くすレベル',
+        ]
     },
     {
         id: 'fq3',
-        text: '損得勘定で動くタイプですか（計算高い）？',
-        category: 'calculation'
+        text: '行動の基準はどこにありますか？',
+        category: 'calculation',
+        options: [
+            '純粋に楽しさ優先',
+            '周りの人のことを考える',
+            '状況による',
+            'やや損得を考える',
+            '完全に計算高い',
+        ]
     },
     {
         id: 'fq4',
-        text: '自分の話ばかりして、人の話を聞きませんか？',
-        category: 'communication'
+        text: '会話のバランスはどうですか？',
+        category: 'communication',
+        options: [
+            '聞き上手で話をよく聞く',
+            'バランスよく話す・聞く',
+            '普通',
+            'やや自分の話が多い',
+            'ほぼ自分の話ばかり',
+        ]
     },
     {
         id: 'fq5',
-        text: 'ドタキャンや遅刻をよくしますか？',
-        category: 'punctuality'
+        text: '約束の時間をどれくらい守りますか？',
+        category: 'punctuality',
+        options: [
+            '必ず5分前に到着',
+            'ほぼ時間通り',
+            '多少遅れることもある',
+            'よく10-20分遅刻',
+            '平気で30分以上遅刻',
+            'ドタキャンもある',
+        ]
     },
     {
         id: 'fq6',
-        text: 'メッセージの既読スルーが多いですか？',
-        category: 'response'
+        text: 'メッセージの返信スピードはどうですか？',
+        category: 'response',
+        options: [
+            '秒速で返信',
+            '数時間以内に返信',
+            '1日以内には返信',
+            'たまに既読スルー',
+            'よく既読スルー',
+            '基本未読スルー',
+        ]
     },
     {
         id: 'fq7',
-        text: 'お金の使い方は荒いですか（散財型）？',
-        category: 'money'
+        text: 'お金の使い方はどうですか？',
+        category: 'money',
+        options: [
+            'かなり堅実・節約家',
+            '計画的に使う',
+            '普通',
+            'やや浪費しがち',
+            'かなり散財する',
+        ]
     },
     {
         id: 'fq8',
-        text: 'ナルシストっぽく、自撮りや見た目の話が多いですか？',
-        category: 'narcissism'
+        text: '自分の見た目への関心度はどうですか？',
+        category: 'narcissism',
+        options: [
+            'ほぼ気にしない',
+            '普通に身だしなみを整える',
+            'おしゃれに気を使う',
+            'かなり気にする',
+            '自撮りや鏡チェックが多い',
+            '完全にナルシスト',
+        ]
     },
     {
         id: 'fq9',
-        text: 'すぐにふてくされたり、拗ねたりしますか？',
-        category: 'sulking'
+        text: '機嫌が悪くなった時の態度はどうですか？',
+        category: 'sulking',
+        options: [
+            'いつも穏やか',
+            '表に出さない',
+            'たまに不機嫌になる',
+            'よくふてくされる',
+            'すぐ拗ねる・当たる',
+        ]
     },
     {
         id: 'fq10',
-        text: '恋人への束縛が激しそうですか？',
-        category: 'possessiveness'
+        text: '恋人への接し方はどんな感じですか？（予想含む）',
+        category: 'possessiveness',
+        options: [
+            '自由を尊重する',
+            '程よい距離感',
+            '普通',
+            'やや束縛しそう',
+            'かなり束縛が激しそう',
+        ]
     },
     {
         id: 'fq11',
-        text: '自分のミスを認めず、言い訳が多いですか？',
-        category: 'responsibility'
+        text: 'ミスをした時の対応はどうですか？',
+        category: 'responsibility',
+        options: [
+            'すぐ謝罪・反省',
+            '素直に認める',
+            '普通',
+            'やや言い訳がち',
+            '絶対に認めない・言い訳ばかり',
+        ]
     },
     {
         id: 'fq12',
-        text: '見栄を張りがちで、背伸びしている感じがしますか？',
-        category: 'vanity'
+        text: '自分を大きく見せようとする傾向はありますか？',
+        category: 'vanity',
+        options: [
+            'ありのまま',
+            '普通',
+            'やや盛りがち',
+            'かなり見栄を張る',
+            '常に背伸びしている',
+        ]
     }
 ];
 

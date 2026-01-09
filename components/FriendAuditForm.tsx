@@ -93,21 +93,19 @@ export default function FriendAuditForm() {
                                     <p className="font-medium text-gray-800 flex-1 leading-relaxed">{q.text}</p>
                                 </div>
 
-                                {/* Dropdown Selection (7-point scale) */}
+                                {/* Dropdown Selection with custom options */}
                                 <div className="mt-3">
                                     <select
-                                        value={currentVal || ''}
+                                        value={currentVal !== undefined ? String(currentVal) : ''}
                                         onChange={(e) => setSpecificAnswers(prev => ({ ...prev, [q.id]: Number(e.target.value) }))}
                                         className="w-full p-3 border-2 border-orange-300 rounded-lg bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none text-gray-700 font-medium"
                                     >
                                         <option value="" disabled>選択してください</option>
-                                        <option value="1">1 - 全く違う</option>
-                                        <option value="2">2 - 違う</option>
-                                        <option value="3">3 - やや違う</option>
-                                        <option value="4">4 - 普通</option>
-                                        <option value="5">5 - ややそう思う</option>
-                                        <option value="6">6 - そう思う</option>
-                                        <option value="7">7 - 完全にそう思う</option>
+                                        {q.options?.map((option, idx) => (
+                                            <option key={idx} value={idx + 1}>
+                                                {option}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
