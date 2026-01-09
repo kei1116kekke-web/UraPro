@@ -1,8 +1,8 @@
 {
     "name": "urapro",
-    "compatibility_date": "2024-09-23",
-    "compatibility_flags": [
-        "nodejs_compat"
-    ],
-    "pages_build_output_dir": ".vercel/output/static"
+    "compatibility_date": "2024-01-01",
+    "vars": {
+        "NEXT_PUBLIC_SUPABASE_URL": "https://qvhbmxtznaudqbcmvyuc.supabase.co",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2aGJteHR6bmF1ZHFiY212eXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5MjQ3OTYsImV4cCI6MjA4MzUwMDc5Nn0.lR0js8gdVuHsxGvAq5xXYhNUU6wvFvxc6DAhr75EKhM"
+    }
 }
