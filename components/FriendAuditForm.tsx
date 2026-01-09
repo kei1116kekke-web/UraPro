@@ -52,7 +52,7 @@ export default function FriendAuditForm() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Progress */}
-                <div className="bg-white p-4 rounded-lg border-2 border-orange-300">
+                <div className="sticky top-0 z-10 bg-white p-4 rounded-lg border-2 border-orange-300 -mx-6 md:-mx-8 mb-4 md:mb-6 shadow-sm">
                     <div className="flex justify-between items-center mb-2">
                         <span className="text-sm font-bold text-orange-600">回答進捗</span>
                         <span className="text-sm font-bold text-orange-600">
