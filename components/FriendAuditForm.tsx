@@ -93,59 +93,22 @@ export default function FriendAuditForm() {
                                     <p className="font-medium text-gray-800 flex-1 leading-relaxed">{q.text}</p>
                                 </div>
 
-                                {/* 7-point scale with gradient sizing */}
-                                <div className="flex flex-col gap-3">
-                                    <div className="flex justify-between items-center gap-1">
-                                        {[1, 2, 3, 4, 5, 6, 7].map((val) => {
-                                            const sizes = {
-                                                1: 'w-12 h-12',
-                                                2: 'w-10 h-10',
-                                                3: 'w-8 h-8',
-                                                4: 'w-7 h-7',
-                                                5: 'w-8 h-8',
-                                                6: 'w-10 h-10',
-                                                7: 'w-12 h-12',
-                                            };
-
-                                            const getColor = () => {
-                                                if (currentVal === val) {
-                                                    return val <= 3
-                                                        ? 'bg-red-500 border-red-600'
-                                                        : val === 4
-                                                            ? 'bg-gray-500 border-gray-600'
-                                                            : 'bg-orange-500 border-orange-600';
-                                                }
-                                                return val <= 3
-                                                    ? 'bg-red-100 border-red-200 hover:border-red-400'
-                                                    : val === 4
-                                                        ? 'bg-gray-100 border-gray-200 hover:border-gray-400'
-                                                        : 'bg-orange-100 border-orange-200 hover:border-orange-400';
-                                            };
-
-                                            return (
-                                                <button
-                                                    key={val}
-                                                    type="button"
-                                                    onClick={() => setSpecificAnswers(prev => ({ ...prev, [q.id]: val }))}
-                                                    className={clsx(
-                                                        "rounded-full border-2 transition-all flex items-center justify-center",
-                                                        sizes[val as keyof typeof sizes],
-                                                        getColor(),
-                                                        currentVal === val ? 'scale-110 shadow-lg' : 'hover:scale-105'
-                                                    )}
-                                                >
-                                                    {currentVal === val && (
-                                                        <span className="text-white font-bold text-xs">{val}</span>
-                                                    )}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                    <div className="flex justify-between text-xs text-gray-500 px-1">
-                                        <span className="text-red-600 font-medium">全く<br />違う</span>
-                                        <span className="text-gray-500">普通</span>
-                                        <span className="text-orange-600 font-medium">完全に<br />そう</span>
-                                    </div>
+                                {/* Dropdown Selection (7-point scale) */}
+                                <div className="mt-3">
+                                    <select
+                                        value={currentVal || ''}
+                                        onChange={(e) => setSpecificAnswers(prev => ({ ...prev, [q.id]: Number(e.target.value) }))}
+                                        className="w-full p-3 border-2 border-orange-300 rounded-lg bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none text-gray-700 font-medium"
+                                    >
+                                        <option value="" disabled>選択してください</option>
+                                        <option value="1">1 - 全く違う</option>
+                                        <option value="2">2 - 違う</option>
+                                        <option value="3">3 - やや違う</option>
+                                        <option value="4">4 - 普通</option>
+                                        <option value="5">5 - ややそう思う</option>
+                                        <option value="6">6 - そう思う</option>
+                                        <option value="7">7 - 完全にそう思う</option>
+                                    </select>
                                 </div>
                             </div>
                         );

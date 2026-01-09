@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { Heart } from "lucide-react";
 import PolicyModal from "./PolicyModal";
 
 export default function Footer() {
@@ -57,6 +58,29 @@ export default function Footer() {
                             className="text-tech-blue hover:underline font-medium"
                         >
                             お問い合わせ
+                        </a>
+                    </div>
+
+                    {/* Donate Buttons */}
+                    <div className="flex justify-between items-center mb-6 max-w-4xl mx-auto">
+                        <a
+                            href="#"
+                            className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold px-4 py-2 rounded-lg shadow-md transition-all text-sm"
+                        >
+                            <Heart className="w-4 h-4" />
+                            開発を支援
+                        </a>
+
+                        <div className="hidden md:block text-xs text-gray-400">
+                            💡 継続的な開発・運営にご協力ください
+                        </div>
+
+                        <a
+                            href="#"
+                            className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold px-4 py-2 rounded-lg shadow-md transition-all text-sm"
+                        >
+                            <Heart className="w-4 h-4" />
+                            Donate
                         </a>
                     </div>
 
