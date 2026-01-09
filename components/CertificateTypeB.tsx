@@ -93,10 +93,10 @@ export default function CertificateTypeB() {
                         <div className="text-sm text-gray-500 mt-1">Type-B: Peer Evaluation</div>
                     </div>
                     <div className="mt-2 md:mt-0 flex flex-col gap-2">
-                        <div className="flex items-center gap-2 bg-green-50 border-2 border-green-500 rounded px-3 py-2">
+                        <div className="absolute top-4 right-4 bg-green-100 border-2 border-green-500 rounded-lg px-4 py-2 flex items-center gap-2 shadow-md">
                             <CheckCircle className="w-5 h-5 text-green-600" />
-                            <div className="text-xs font-bold text-green-700">
-                                <div>✓ 他者認定済み</div>
+                            <div className="text-xs">
+                                <div className="font-bold text-green-800">他者認定済み</div>
                                 <div>Verified by Peer</div>
                             </div>
                         </div>
