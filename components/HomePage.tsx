@@ -14,6 +14,18 @@ export default function HomePage() {
             {/* Hero Section */}
             <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50 px-4 py-20">
                 <div className="max-w-4xl mx-auto text-center">
+                    {/* Logo */}
+                    <div className="mb-8 flex justify-center">
+                        <Image
+                            src="/urapro_logo.png"
+                            alt="UraPro 裏プロ"
+                            width={300}
+                            height={100}
+                            className="object-contain"
+                            priority
+                        />
+                    </div>
+
                     {/* Catchphrase */}
                     <h1 className="text-4xl md:text-6xl font-serif font-bold text-dark-gray mb-6 leading-tight">
                         そのプロフィール、<br />

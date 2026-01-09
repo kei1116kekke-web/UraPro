@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import PolicyModal from "./PolicyModal";
 
 export default function Footer() {
@@ -18,8 +19,14 @@ export default function Footer() {
                 <div className="container mx-auto px-4 max-w-6xl">
                     {/* Logo & Description */}
                     <div className="text-center mb-6">
-                        <div className="text-2xl font-serif font-bold text-tech-blue mb-2">
-                            裏プロフィール発行局
+                        <div className="flex justify-center mb-3">
+                            <Image
+                                src="/urapro_logo.png"
+                                alt="UraPro 裏プロ"
+                                width={200}
+                                height={67}
+                                className="object-contain"
+                            />
                         </div>
                         <div className="text-xs text-gray-500 mb-1">
                             URAPRO CERTIFICATION AUTHORITY (FICTIONAL)
