@@ -24,8 +24,11 @@ export interface DiagnosisAnswers {
 }
 
 export interface FriendAnswers {
-    ratings: { [category: string]: number }; // Category-based 1-5 ratings
+    ratings: { [category: string]: number }; // Category-based ratings
+    specificAnswers?: { [questionId: string]: number }; // Specific 7-point scale questions
+    tags?: string[]; // Selected impression tags
     comments: string; // Free-form roast/reveal comments
+    episode?: string; // Specific episode/story
 }
 
 export interface RadarStats {

@@ -2,14 +2,18 @@
 
 import { useFormContext } from "@/context/FormContext";
 import { CATEGORIES } from "@/data/questions";
+import { FRIEND_QUESTIONS, IMPRESSION_TAGS } from "@/data/friendQuestions";
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { UserCheck, MessageSquare } from "lucide-react";
+import { UserCheck, MessageSquare, Sparkles } from "lucide-react";
+import ImpressionTags from "./ImpressionTags";
 
 export default function FriendAuditForm() {
     const { state, updateFriendAnswers, setStep } = useFormContext();
-    const [ratings, setRatings] = useState<{ [category: string]: number }>({});
+    const [specificAnswers, setSpecificAnswers] = useState<{ [key: string]: number }>({});
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [comments, setComments] = useState("");
+    const [episode, setEpisode] = useState("");
 
     // Scroll to top when component mounts
     useEffect(() => {
@@ -18,86 +22,159 @@ export default function FriendAuditForm() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        updateFriendAnswers({ ratings, comments });
-        setStep(5); // Go to gap analysis animation
+
+        // Convert specific answers to category ratings (average)
+        const categoryRatings: { [key: string]: number } = {};
+        CATEGORIES.forEach(cat => {
+            categoryRatings[cat.id] = 3; // Default middle value
+        });
+
+        updateFriendAnswers({
+            ratings: categoryRatings,
+            specificAnswers,
+            tags: selectedTags,
+            comments,
+            episode
+        });
+        setStep(5); // Go to payment gate
     };
 
-    const isComplete = CATEGORIES.every(cat => ratings[cat.id] !== undefined);
-
-    // Friend-specific questions for each category
-    const friendQuestions: { [key: string]: string } = {
-        honesty: 'この人は約束を守りますか？',
-        communication: 'この人は人の話を聞いていますか？',
-        love_style: 'この人は連絡マメですか？',
-        loyalty: 'この人は浮気しそうですか？（1=しない、5=しそう）',
-        emotional: 'この人はすぐ感情的になりますか？',
-        values: 'この人はお金の管理ができていますか？',
-        life_skills: 'この人の部屋は片付いていますか？',
-        sociability: 'この人は社交的ですか？',
-        self_esteem: 'この人は自信がありそうですか？',
-        flexibility: 'この人は変化に対応できそうですか？',
-    };
+    const isComplete = FRIEND_QUESTIONS.every(q => specificAnswers[q.id] !== undefined);
+    const progress = Math.round((Object.keys(specificAnswers).length / FRIEND_QUESTIONS.length) * 100);
 
     return (
-        <div className="w-full max-w-3xl bg-gradient-to-br from-orange-50 to-red-50 p-6 md:p-8 rounded-xl shadow-lg border-2 border-orange-400">
-            <div className="bg-orange-500 text-white p-4 rounded-lg mb-6 text-center">
-                <UserCheck className="w-8 h-8 mx-auto mb-2" />
-                <h2 className="text-2xl font-bold">友人監査フォーム</h2>
-                <p className="text-sm mt-1">あなたから見た「{state.profile.name}さん」の実態を教えてください</p>
+        <div className="w-full max-w-4xl bg-gradient-to-br from-orange-50 to-red-50 p-6 md:p-8 rounded-xl shadow-lg border-2 border-orange-400">
+            <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-5 rounded-lg mb-6 text-center">
+                <UserCheck className="w-10 h-10 mx-auto mb-3" />
+                <h2 className="text-3xl font-bold mb-2">他者評価フォーム</h2>
+                <p className="text-sm">あなたから見た「{state.profile.name}さん」の実態を教えてください</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-4 mb-6">
+                {/* Progress */}
+                <div className="bg-white p-4 rounded-lg border-2 border-orange-300">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-bold text-orange-600">回答進捗</span>
+                        <span className="text-sm font-bold text-orange-600">
+                            {Object.keys(specificAnswers).length} / {FRIEND_QUESTIONS.length}
+                        </span>
+                    </div>
+                    <div className="w-full bg-orange-100 rounded-full h-3 overflow-hidden">
+                        <div
+                            className="bg-gradient-to-r from-orange-500 to-red-500 h-full rounded-full transition-all duration-500"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                </div>
+
+                {/* Warning */}
+                <div className="bg-yellow-100 border-2 border-yellow-400 rounded-lg p-4">
                     <p className="text-sm text-yellow-800 text-center font-medium">
                         ⚠️ 本人の回答は表示されません。あなたが感じる実態を正直に評価してください
                     </p>
                 </div>
 
-                {CATEGORIES.map((cat, index) => {
-                    const currentVal = ratings[cat.id];
+                {/* Specific Questions (7-point scale) */}
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-3">
+                        <Sparkles className="w-5 h-5 text-orange-600" />
+                        <h3 className="font-bold text-orange-700 text-lg">具体的な質問（12問）</h3>
+                    </div>
 
-                    return (
-                        <div key={cat.id} className="bg-white p-4 rounded-lg border border-orange-300">
-                            <div className="flex items-start gap-3 mb-4">
-                                <span className="bg-orange-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5 font-bold">
-                                    {index + 1}
-                                </span>
-                                <div className="flex-1">
-                                    <h3 className="font-bold text-gray-800 mb-1">{cat.name}</h3>
-                                    <p className="text-sm text-gray-600">{friendQuestions[cat.id]}</p>
+                    {FRIEND_QUESTIONS.map((q, index) => {
+                        const currentVal = specificAnswers[q.id];
+
+                        return (
+                            <div key={q.id} className="bg-white p-4 rounded-lg border border-orange-300 shadow-sm">
+                                <div className="flex items-start gap-3 mb-4">
+                                    <span className="bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0 font-bold">
+                                        {index + 1}
+                                    </span>
+                                    <p className="font-medium text-gray-800 flex-1 leading-relaxed">{q.text}</p>
+                                </div>
+
+                                {/* 7-point scale with gradient sizing */}
+                                <div className="flex flex-col gap-3">
+                                    <div className="flex justify-between items-center gap-1">
+                                        {[1, 2, 3, 4, 5, 6, 7].map((val) => {
+                                            const sizes = {
+                                                1: 'w-12 h-12',
+                                                2: 'w-10 h-10',
+                                                3: 'w-8 h-8',
+                                                4: 'w-7 h-7',
+                                                5: 'w-8 h-8',
+                                                6: 'w-10 h-10',
+                                                7: 'w-12 h-12',
+                                            };
+
+                                            const getColor = () => {
+                                                if (currentVal === val) {
+                                                    return val <= 3
+                                                        ? 'bg-red-500 border-red-600'
+                                                        : val === 4
+                                                            ? 'bg-gray-500 border-gray-600'
+                                                            : 'bg-orange-500 border-orange-600';
+                                                }
+                                                return val <= 3
+                                                    ? 'bg-red-100 border-red-200 hover:border-red-400'
+                                                    : val === 4
+                                                        ? 'bg-gray-100 border-gray-200 hover:border-gray-400'
+                                                        : 'bg-orange-100 border-orange-200 hover:border-orange-400';
+                                            };
+
+                                            return (
+                                                <button
+                                                    key={val}
+                                                    type="button"
+                                                    onClick={() => setSpecificAnswers(prev => ({ ...prev, [q.id]: val }))}
+                                                    className={clsx(
+                                                        "rounded-full border-2 transition-all flex items-center justify-center",
+                                                        sizes[val as keyof typeof sizes],
+                                                        getColor(),
+                                                        currentVal === val ? 'scale-110 shadow-lg' : 'hover:scale-105'
+                                                    )}
+                                                >
+                                                    {currentVal === val && (
+                                                        <span className="text-white font-bold text-xs">{val}</span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                    <div className="flex justify-between text-xs text-gray-500 px-1">
+                                        <span className="text-red-600 font-medium">全く<br />違う</span>
+                                        <span className="text-gray-500">普通</span>
+                                        <span className="text-orange-600 font-medium">完全に<br />そう</span>
+                                    </div>
                                 </div>
                             </div>
+                        );
+                    })}
+                </div>
 
-                            <div className="flex flex-col gap-2">
-                                <div className="flex justify-between items-center gap-1 sm:gap-2">
-                                    {[1, 2, 3, 4, 5].map((val) => (
-                                        <button
-                                            key={val}
-                                            type="button"
-                                            onClick={() => setRatings(prev => ({ ...prev, [cat.id]: val }))}
-                                            className={clsx(
-                                                "flex-1 py-3 rounded-md text-sm font-bold transition-all border-2",
-                                                currentVal === val
-                                                    ? "bg-orange-500 text-white border-orange-500 shadow-md transform scale-105"
-                                                    : "bg-white text-gray-500 border-gray-200 hover:border-orange-400 hover:bg-orange-50"
-                                            )}
-                                        >
-                                            {val}
-                                        </button>
-                                    ))}
-                                </div>
-                                <div className="flex justify-between text-xs text-gray-400 px-1">
-                                    <span>違う</span>
-                                    <span className="text-center">普通</span>
-                                    <span>そう思う</span>
-                                </div>
-                            </div>
-                        </div>
-                    );
-                })}
+                {/* Impression Tags */}
+                <ImpressionTags
+                    tags={IMPRESSION_TAGS}
+                    selectedTags={selectedTags}
+                    onTagsChange={setSelectedTags}
+                />
 
-                {/* Comments Section */}
-                <div className="bg-gradient-to-r from-red-50 to-orange-50 p-4 rounded-lg border-2 border-red-300">
+                {/* Episode Input */}
+                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-lg border-2 border-blue-300">
+                    <div className="flex items-center gap-2 mb-3">
+                        <MessageSquare className="w-5 h-5 text-blue-600" />
+                        <h3 className="font-bold text-blue-700">具体的なエピソード（任意）</h3>
+                    </div>
+                    <textarea
+                        value={episode}
+                        onChange={(e) => setEpisode(e.target.value)}
+                        className="w-full p-3 border-2 border-blue-200 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none min-h-24 mb-3"
+                        placeholder="この人を象徴するエピソードがあれば教えてください（例: 「飲み会で必ず1時間遅刻してくる」「デートプランは全部こっち任せ」）"
+                    />
+                </div>
+
+                {/* Comments Section (Expose) */}
+                <div className="bg-gradient-to-r from-red-50 to-orange-50 p-5 rounded-lg border-2 border-red-300">
                     <div className="flex items-center gap-2 mb-3">
                         <MessageSquare className="w-5 h-5 text-red-600" />
                         <h3 className="font-bold text-red-700">暴露コメント（任意）</h3>
@@ -114,18 +191,18 @@ export default function FriendAuditForm() {
                     type="submit"
                     disabled={!isComplete}
                     className={clsx(
-                        "w-full py-4 text-white font-bold rounded-lg shadow-md transition-all text-lg",
+                        "w-full py-5 text-white font-bold rounded-lg shadow-md transition-all text-lg",
                         isComplete
                             ? "bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transform hover:-translate-y-1"
                             : "bg-gray-300 cursor-not-allowed"
                     )}
                 >
-                    監査結果を提出する
+                    他者評価を提出する
                 </button>
 
                 {!isComplete && (
-                    <p className="text-center text-orange-600 text-sm">
-                        全ての項目に回答してください
+                    <p className="text-center text-orange-600 text-sm font-medium">
+                        全ての質問（12問）に回答してください
                     </p>
                 )}
             </form>
