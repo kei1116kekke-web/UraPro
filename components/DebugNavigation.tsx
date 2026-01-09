@@ -2,12 +2,17 @@
 
 import { useFormContext } from "@/context/FormContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function DebugNavigation() {
     const { state, setStep } = useFormContext();
-    const searchParams = useSearchParams();
-    const isDebug = searchParams.get('debug') === 'true';
+    const [isDebug, setIsDebug] = useState(false);
+
+    useEffect(() => {
+        // Check if ?debug=true is in URL
+        const params = new URLSearchParams(window.location.search);
+        setIsDebug(params.get('debug') === 'true');
+    }, []);
 
     if (!isDebug) return null;
 
