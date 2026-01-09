@@ -34,7 +34,7 @@ export default function HomePage() {
                     </h1>
 
                     <p className="text-xl md:text-2xl text-gray-600 mb-12 font-medium">
-                        AIが暴く、あなたの『裏』裏プロ証明書。
+                        AIが暴く、あなたの『裏プロ証明書』。
                     </p>
 
                     {/* 3D Certificate Image */}

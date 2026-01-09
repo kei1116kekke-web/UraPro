@@ -64,7 +64,7 @@ export default function Footer() {
                     {/* Donate Buttons */}
                     <div className="flex justify-between items-center mb-6 max-w-4xl mx-auto">
                         <a
-                            href="#"
+                            href="/donate"
                             className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold px-4 py-2 rounded-lg shadow-md transition-all text-sm"
                         >
                             <Heart className="w-4 h-4" />
@@ -76,7 +76,7 @@ export default function Footer() {
                         </div>
 
                         <a
-                            href="#"
+                            href="/donate"
                             className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold px-4 py-2 rounded-lg shadow-md transition-all text-sm"
                         >
                             <Heart className="w-4 h-4" />
