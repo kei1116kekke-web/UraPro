@@ -23,6 +23,11 @@ export interface DiagnosisAnswers {
     [key: string]: number | string; // Support both scale (number) and choice (string) answers
 }
 
+export interface FriendAnswers {
+    ratings: { [category: string]: number }; // Category-based 1-5 ratings
+    comments: string; // Free-form roast/reveal comments
+}
+
 export interface RadarStats {
     label: string;
     value: number; // 1-5
@@ -39,4 +44,5 @@ export interface FormState {
     step: number;
     profile: ProfileData;
     answers: DiagnosisAnswers;
+    friendAnswers?: FriendAnswers; // Optional friend evaluation data
 }

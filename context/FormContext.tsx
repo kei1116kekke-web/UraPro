@@ -1,13 +1,14 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { FormState, ProfileData, DiagnosisAnswers } from '@/types';
+import { FormState, ProfileData, DiagnosisAnswers, FriendAnswers } from '@/types';
 
 interface FormContextType {
     state: FormState;
     setStep: (step: number) => void;
     updateProfile: (data: Partial<ProfileData>) => void;
     updateAnswers: (newAnswers: DiagnosisAnswers) => void;
+    updateFriendAnswers: (friendAnswers: FriendAnswers) => void;
     resetForm: () => void;
 }
 
@@ -50,12 +51,19 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
         }));
     };
 
+    const updateFriendAnswers = (friendAnswers: FriendAnswers) => {
+        setState((prev) => ({
+            ...prev,
+            friendAnswers,
+        }));
+    };
+
     const resetForm = () => {
         setState(defaultState);
     };
 
     return (
-        <FormContext.Provider value={{ state, setStep, updateProfile, updateAnswers, resetForm }}>
+        <FormContext.Provider value={{ state, setStep, updateProfile, updateAnswers, updateFriendAnswers, resetForm }}>
             {children}
         </FormContext.Provider>
     );
